@@ -51,3 +51,4 @@ lua11dump.txt
 *.lib
 *.bat
 build*/
+*.user
