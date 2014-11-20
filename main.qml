@@ -34,8 +34,6 @@ Window
         name: name.text
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
-        connectInterval: 5
-        //pingInterval: 5
 
         socket.onConnected:
         {
@@ -74,11 +72,14 @@ Window
             RowLayout { Text { text: 'user name:' } TextInput { id: name; text: 'Ушат Помоев' } }
             RowLayout { Text { text: 'recipient jid:' } TextInput { id: to; text: 'undwad@jabber.integra-s.com' } }
             RowLayout { Text { text: 'message/status:' } TextInput { id: msg; text: 'хуй гортензия' } }
+            CheckBox { text: 'autoconnect'; onCheckedChanged: xmpp.connectInterval = checked ? 5 : 0 }
+            CheckBox { text: 'autoping'; onCheckedChanged: xmpp.pingInterval = checked ? 5 : 0 }
             Button { text: 'registration'; onClicked: xmpp.sendRegistration() }
             Button { text: 'authenticate'; onClicked: xmpp.sendPlainAuth() }
             Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
             ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
             Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
+            Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
         }
     }
 }
