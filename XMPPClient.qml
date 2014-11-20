@@ -211,7 +211,7 @@ XMLProtocol
         show = show || 'unavailable'
         if('unavailable' === show)
             send({
-                     $name: 'presence',
+                     //$name: 'presence',
                      type: 'unavailable'
                  })
         else

@@ -94,16 +94,23 @@ signals:
     void disconnected();
 
 public slots:
-    void send(const QJSValue& object, bool close = true)
+    bool send(const QJSValue& object, bool close = true)
     {
         if(socket)
         {
             QString text;
             QXmlStreamWriter xml(&text);
             object2xml(object, xml, close);
-            if(!close) text += '>';
-            socket->write(text.toUtf8());
+            if(xml.hasError())
+                emit xmlError(errorString());
+            else
+            {
+                if(!close) text += '>';
+                socket->write(text.toUtf8());
+                return true;
+            }
         }
+        return false;
     }
 
     void reset()
