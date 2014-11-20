@@ -68,7 +68,6 @@ class XMLProtocol : public QObject, QXmlStreamReader
     Q_PROPERTY (SSLSocket* socket READ getSocket)
     Q_PROPERTY(QQmlListProperty<QObject> children READ getChildren)
     Q_PROPERTY (QList<QString> opentags MEMBER opentags)
-    Q_PROPERTY (QString error MEMBER error_)
 
     Q_CLASSINFO("DefaultProperty", "children")
 
@@ -88,14 +87,14 @@ public:
     QQmlListProperty<QObject> getChildren() { return QQmlListProperty<QObject>(this, children); }
 
 signals:
-    void error();
+    void xmlError(const QString& error);
     void connected();
     void encrypted();
     void received(const QJSValue& object);
     void disconnected();
 
 public slots:
-    bool send(const QJSValue& object, bool close = true)
+    void send(const QJSValue& object, bool close = true)
     {
         if(socket)
         {
@@ -104,10 +103,7 @@ public slots:
             object2xml(object, xml, close);
             if(!close) text += '>';
             socket->write(text.toUtf8());
-            return true;
         }
-        else error_ = "socket not set";
-        return false;
     }
 
     void reset()
@@ -165,10 +161,7 @@ private slots:
                 case QXmlStreamReader::Invalid:
                 {
                     if(QXmlStreamReader::PrematureEndOfDocumentError != QXmlStreamReader::error())
-                    {
-                        error_ = errorString();
-                        emit error();
-                    }
+                        emit xmlError(errorString());
                     break;
                 }
             }
@@ -177,7 +170,6 @@ private slots:
 private:
     SSLSocket* socket = new SSLSocket();
     QList<QString> opentags;
-    QString error_;
     QJSValue object;
     QStack<QJSValue> stack;
     QList<QObject*> children;

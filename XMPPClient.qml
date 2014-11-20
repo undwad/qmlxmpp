@@ -26,7 +26,7 @@ XMLProtocol
 
     property int sid: 0
 
-    signal failure(var stanza)
+    signal error(var stanza)
     signal unknown(var stanza)
     signal established()
     signal registred()
@@ -39,7 +39,7 @@ XMLProtocol
     {
         'stream:stream': function(){ },
         'stream:features': handleFeatures,
-        failure: failure,
+        failure: error,
         proceed: socket.startClientEncryption,
         success: sendBindResource,
         iq:
@@ -83,7 +83,7 @@ XMLProtocol
         var name = object.$name
 
         if('type' in object && 'error' === object.type)
-            failure(object)
+            error(object)
 
         if(name in this.handler)
         {

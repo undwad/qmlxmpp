@@ -54,8 +54,8 @@ Window
         onMessage: print('MESSAGE', stanza.stringify())
         onPresence: print('PRESENCE', stanza.stringify())
         onUnknown: print('UNKNOWN', stanza.stringify())
-        onFailure: print('FAILURE', stanza.stringify())
-        onError: print('XML ERROR', error)
+        onError: print('ERROR', stanza.stringify())
+        onXmlError: print('XML ERROR', error)
     }
 
     ListView
