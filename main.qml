@@ -50,7 +50,13 @@ Window
         onEstablished: print('ESTABLISHED')
         onRegistred: print('REGISTRED')
         onAuthenticated: print('AUTHENTICATED')
-        onDiscovered: print('DISCOVERED', items.stringify())
+        onDiscovered:
+        {
+            print('DISCOVERED')
+            itemlist.model.clear()
+            for(var jid in items)
+                itemlist.model.append({text: items[jid].name, jid: jid})
+        }
         onMessage: print('MESSAGE', stanza.stringify())
         onPresence: print('PRESENCE', stanza.stringify())
 
@@ -77,6 +83,7 @@ Window
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
         Button { text: 'discover items'; onClicked: xmpp.sendDiscoverItems() }
+        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { id: model; ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoverInfo(model.get(currentIndex).jid, function(result){ result.print() }) } }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 }
