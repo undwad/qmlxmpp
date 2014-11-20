@@ -1,3 +1,12 @@
+/*
+** sslsocket.h by undwad
+** QSslSocket binding to qml
+** look ./XMPPClient.qml for usage example
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 #pragma once
 
 #include <QObject>

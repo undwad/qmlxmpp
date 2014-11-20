@@ -1,3 +1,11 @@
+/*
+** main.qml by undwad
+** xmpp client for qml example
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
@@ -12,7 +20,7 @@ Window
 
     DNSResolver
     {
-        host: 'jabber.integra-s.com'
+        host: 'jabber.org'
         onResolved: print(host, ':', addresses)
         onFailed: print(error)
     }
@@ -61,7 +69,7 @@ Window
         model: VisualItemModel
         {
             RowLayout { Text { text: 'user jid:' } TextInput { id: from; text: 'undwad2@jabber.integra-s.com' } }
-            RowLayout { Text { text: 'user password:' } TextInput { id: password; echoMode: TextInput.PasswordEchoOnEdit; text: 'ilcleo2';  } }
+            RowLayout { Text { text: 'user password:' } TextInput { id: password; echoMode: TextInput.PasswordEchoOnEdit; text: '21345678';  } }
             RowLayout { Text { text: 'user email:' } TextInput { id: email; text: 'undwad@mail.ru' } }
             RowLayout { Text { text: 'user name:' } TextInput { id: name; text: 'Ушат Помоев' } }
             RowLayout { Text { text: 'recipient jid:' } TextInput { id: to; text: 'undwad@jabber.integra-s.com' } }

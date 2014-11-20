@@ -1,3 +1,12 @@
+/*
+** stringutils.h by undwad
+** some qt string utils binding to qml
+** look ./utils.js for usage example
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 #pragma once
 
 #include <QObject>

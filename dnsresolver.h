@@ -1,3 +1,12 @@
+/*
+** dnsresolver.h by undwad
+** QHostInfo::lookupHost binding to qml
+** look ./main.qml for usage example
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 #pragma once
 
 #include <QQuickItem>

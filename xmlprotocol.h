@@ -1,3 +1,48 @@
+/*
+** xmlprotocol.h by undwad
+** xml based socket client binding to qml
+** look ./XMPPClient.qml for usage example
+**
+** converts xml packets to/from java script objects for easy processing within qml
+**
+** <tag1 attr1="1" attr2="2">
+**     <tag2 attr1="1" />
+**     <tag3>value1</tag3>
+** </tag1>
+**
+** is converted to
+**
+** {
+**     $name: 'tag1',
+**     attr1: '1',
+**     attr2: '2',
+**     $elements:
+**     [
+**         {
+**             $name: 'tag2',
+**             attr1: '1'
+**         },
+**         {
+**             $name: 'tag3',
+**             $value: 'value1'
+**         }
+**     ]
+** }
+**
+** and can be also converted from
+**
+** {
+**     $name: 'tag1',
+**     attr1: '1',
+**     attr2: '2',
+**     tag2$: { attr1: '1' },
+**     tag3$: 'value1'
+** }
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 #pragma once
 
 #include <QObject>

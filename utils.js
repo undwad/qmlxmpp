@@ -1,3 +1,11 @@
+/*
+** utils.js by undwad
+** some useful javascript extensions
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 String.prototype.toHex = function() { return StringUtils.toHex(this) }
 String.prototype.fromHex = function() { return StringUtils.fromHex(this) }
 String.prototype.toBase64 = function() { return StringUtils.toBase64(this) }

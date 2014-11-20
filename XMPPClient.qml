@@ -1,3 +1,11 @@
+/*
+** XMPPClient.qml by undwad
+** xmpp client object for qml
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.0
 import atnix.web 1.0
 import 'utils.js' as Utils
