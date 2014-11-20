@@ -29,7 +29,7 @@
 **     ]
 ** }
 **
-** and can be also converted from
+** and also can be converted from
 **
 ** {
 **     $name: 'tag1',
