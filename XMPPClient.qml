@@ -26,11 +26,15 @@ XMLProtocol
 
     property int sid: 0
 
+    property var features
+    property var items
+
     signal error(var stanza)
     signal unknown(var stanza)
     signal established()
     signal registred()
     signal authenticated()
+    signal discovered()
     signal presence(var stanza)
     signal message(var stanza)
     signal timeout()
@@ -49,8 +53,6 @@ XMLProtocol
         message: message,
         presence: presence
     }
-
-    property var features
 
     onJidChanged:
     {
@@ -241,6 +243,32 @@ XMLProtocol
                       })
     }
 
+    function sendDiscoverItems()
+    {
+        return sendIQ({
+                          from: jid,
+                          to: socket.host,
+                          type: 'get',
+                          query$: { xmlns: 'http://jabber.org/protocol/disco#items' }
+                      }, function(result)
+                      {
+                          if('result' === result.type)
+                          {
+                              items = result.$elements.toObject('$name').query.$elements.toObject('jid')
+                              discovered()
+                          }
+                      })
+    }
+
+    function sendDiscoverInfo(to, callback)
+    {
+        return sendIQ({
+                          from: jid,
+                          to: to,
+                          type: 'get',
+                          query$: { xmlns: 'http://jabber.org/protocol/disco#info' }
+                      }, callback)
+    }
 
     function sendMessage(to, text, type, lang)
     {

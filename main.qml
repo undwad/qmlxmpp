@@ -15,7 +15,7 @@ import atnix.web 1.0
 Window
 {
     width: 300
-    height: 600
+    height: 800
     visible: true
 
     DNSResolver
@@ -50,12 +50,14 @@ Window
         onEstablished: print('ESTABLISHED')
         onRegistred: print('REGISTRED')
         onAuthenticated: print('AUTHENTICATED')
-        onTimeout: print('TIMEOUT')
+        onDiscovered: print('DISCOVERED', items.stringify())
         onMessage: print('MESSAGE', stanza.stringify())
         onPresence: print('PRESENCE', stanza.stringify())
+
         onUnknown: print('UNKNOWN', stanza.stringify())
         onError: print('ERROR', stanza.stringify())
         onXmlError: print('XML ERROR', error)
+        onTimeout: print('TIMEOUT')
     }
 
     ColumnLayout
@@ -74,6 +76,7 @@ Window
         Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
+        Button { text: 'discover items'; onClicked: xmpp.sendDiscoverItems() }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 }
