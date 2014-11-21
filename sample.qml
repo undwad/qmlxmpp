@@ -10,6 +10,7 @@ import QtQuick 2.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import 'utils.js' as Utils
 import atnix.web 1.0
 
 Window
@@ -35,6 +36,8 @@ Window
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
 
+        pubsubjid: pubsub.text
+
         socket.onConnected:
         {
             print("CONNECTED");
@@ -57,11 +60,11 @@ Window
             for(var jid in items)
                 itemlist.model.append({text: items[jid].name, jid: jid})
         }
-        onMessage: print('MESSAGE', stanza.stringify())
-        onPresence: print('PRESENCE', stanza.stringify())
+        onMessage: print('MESSAGE', Utils.toPrettyString(stanza))
+        onPresence: print('PRESENCE', Utils.toPrettyString(stanza))
 
-        onUnknown: print('UNKNOWN', stanza.stringify())
-        onError: print('ERROR', stanza.stringify())
+        onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
+        onError: print('ERROR', Utils.toPrettyString(stanza.stringify))
         onXmlError: print('XML ERROR', error)
         onTimeout: print('TIMEOUT')
     }
@@ -83,7 +86,23 @@ Window
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
         Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems() }
-        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { id: model; ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, function(result){ result.print() }) } }
+        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, function(result){ Utils.prettyPrint(result) }) } }
+        RowLayout { Text { text: 'pubsub jid:' } TextInput { id: pubsub; text: 'pubsub.jabber.integra-s.com' } }
+        Button { text: 'discover pubsub'; onClicked: xmpp.sendDiscoItems(pubsub.text, function(result){
+            Utils.prettyPrint(result)
+            topnodes.model.clear()
+            var query = Utils.toObject(result.$elements, '$name').query
+            if('$elements' in query)
+            {
+                var items = Utils.toObject(query.$elements, 'node')
+                for(var node in items)
+                    topnodes.model.append({text: '%1(%2)'.arg(items[node].name).arg(node), node: node})
+            }
+        })}
+        RowLayout { Text { text: 'items:' } ComboBox { id: topnodes; model: ListModel { ListElement { text: "no discovered nodes" } } } }
+        RowLayout { Text { text: 'node:' } TextInput { id: nodeid; text: 'samplenode' } Text { text: 'name:' } TextInput { id: nodename; text: 'sample node' } }
+        Button { text: 'create node'; onClicked: xmpp.sendCreateNode(nodeid.text, function(result){ Utils.prettyPrint(result) }) }
+        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(nodeid.text, function(result){ Utils.prettyPrint(result) }) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 }

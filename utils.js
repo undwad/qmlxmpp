@@ -13,19 +13,20 @@ String.prototype.fromBase64 = function() { return StringUtils.fromBase64(this) }
 String.prototype.toHash = function(algorithm) { return StringUtils.toHash(this, algorithm || StringUtils.Md5) }
 String.prototype.parseURL = function() { return StringUtils.parseURL(this) }
 
-Object.prototype.stringify = function() { return JSON.stringify(this, null, '\t') }
-Object.prototype.print = function() { print(this.stringify()) }
+function toPrettyString(object) { return JSON.stringify(object, null, '\t') }
+function prettyPrint(object) { print(toPrettyString(object)) }
 
-Array.prototype.toObject = function(key)
+function toObject(array, key)
 {
     var object = {}
-    for(var i in this)
+    for(var i in array)
     {
-        var item = this[i]
+        var item = array[i]
         object[item[key]] = item
     }
     return object
 }
+
 
 
 

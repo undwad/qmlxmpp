@@ -81,7 +81,6 @@ XMLProtocol
 
     onReceived:
     {
-        //object.print()
         var name = object.$name
 
         if('type' in object && 'error' === object.type)
@@ -252,18 +251,19 @@ XMLProtocol
                       })
     }
 
-    function sendDiscoItems()
+    function sendDiscoItems(to, callback)
     {
         return sendIQ({
                           from: jid,
-                          to: socket.host,
+                          to: to || socket.host,
                           type: 'get',
                           query$: { xmlns: 'http://jabber.org/protocol/disco#items' }
-                      }, function(result)
+                      }, callback || function(result)
                       {
                           if('result' === result.type)
                           {
-                              items = result.$elements.toObject('$name').query.$elements.toObject('jid')
+                              var query = Utils.toObject(result.$elements, '$name').query
+                              items = Utils.toObject(query.$elements, 'jid')
                               discovered()
                           }
                       })
@@ -293,7 +293,7 @@ XMLProtocol
 
     function handleFeatures(object)
     {
-        features = object.$elements.toObject('$name')
+        features = Utils.toObject(object.$elements, '$name')
         if(!socket.isEncrypted)
         {
             if('starttls' in features) sendStartTLS()
