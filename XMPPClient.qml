@@ -56,7 +56,7 @@ XMLProtocol
 
     onJidChanged:
     {
-        var url = ('jid://' + jid).parseURL()
+        var url = StringUtils.parseURL('jid://' + jid)
         socket.host = url.host
         username = url.userName
         resource = url.fileName
@@ -154,7 +154,7 @@ XMLProtocol
                  $name: 'auth',
                  xmlns: 'urn:ietf:params:xml:ns:xmpp-sasl',
                  mechanism: 'PLAIN',
-                 $value: ('\0' + username + '\0' + password).toBase64()
+                 $value: StringUtils.toBase64('\0' + username + '\0' + password)
              })
     }
 

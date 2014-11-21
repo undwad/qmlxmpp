@@ -89,7 +89,6 @@ Window
         RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, function(result){ Utils.prettyPrint(result) }) } }
         RowLayout { Text { text: 'pubsub jid:' } TextInput { id: pubsub; text: 'pubsub.jabber.integra-s.com' } }
         Button { text: 'discover pubsub'; onClicked: xmpp.sendDiscoItems(pubsub.text, function(result){
-            Utils.prettyPrint(result)
             topnodes.model.clear()
             var query = Utils.toObject(result.$elements, '$name').query
             if('$elements' in query)
