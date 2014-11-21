@@ -101,8 +101,33 @@ Window
         RowLayout { Text { text: 'items:' } ComboBox { id: topnodes; model: ListModel { ListElement { text: "no discovered nodes" } } } }
         RowLayout { Text { text: 'node:' } TextInput { id: node; text: 'samplenode' } Text { text: 'name:' } TextInput { id: nodeTitle; text: 'sample node' } TextInput { id: nodeDescription; text: 'sample description for sample node' } }
         Button { text: 'create node'; onClicked: xmpp.sendCreateNode(node.text, {
-                                                                         'pubsub#title': nodeTitle.text,
-                                                                         'pubsub#description': nodeDescription.text
+                                                                         'pubsub#title': nodeTitle.text, // Short name for the node
+                                                                         'pubsub#description': nodeDescription.text, // Description of the node
+                                                                         'pubsub#node_type': 'leaf', // (leaf|collection) Whether the node is a leaf (default) or a collection
+//                                                                         'pubsub#collection': 'collection', // The collection with which a node is affiliated
+                                                                         'pubsub#subscribe': 1, // (1|0) Allow subscriptions to node
+                                                                         'pubsub#subscription_required': 0, // (0|1) New subscriptions require configuration
+                                                                         'pubsub#deliver_payloads': 0, // (1|0) Deliver payloads with event notifications
+                                                                         'pubsub#notify_config': 0, // (1|0) Notify subscribers when the node configuration changes
+                                                                         'pubsub#notify_delete': 0, // (1|0) Notify subscribers when the node is deleted
+                                                                         'pubsub#notify_retract': 0, // (1|0) Notify subscribers when items are removed from the node
+                                                                         'pubsub#presence_based_delivery': 0, // (0|1) Only deliver notifications to available users
+//                                                                         'pubsub#type': '', // Type of payload data to be provided at this node
+//                                                                         'pubsub#body_xslt': '', // Message body XSLT
+//                                                                         'pubsub#dataform_xslt': '', // Payload XSLT
+                                                                         'pubsub#access_model': 'open', // (open|authorize|presence|roster|whitelist) Specify who may subscribe and retrieve items
+                                                                         'pubsub#publish_model': 'open', // (publishers|subscribers|open) Publisher model
+//                                                                         'pubsub#roster_groups_allowed': [], // [groups] Roster groups allowed to subscribe
+//                                                                         'pubsub#contact': [], // [jids] People to contact with questions
+//                                                                         'pubsub#language': 'English', // (English|...) Default language
+//                                                                         'pubsub#owner': [from.text, to.text], // [jids] Node owners
+//                                                                         'pubsub#publisher': [], // [jids] Node publishers
+//                                                                         'pubsub#itemreply': 'owner', // (owner|publisher) Select entity that should receive replies to items
+//                                                                         'pubsub#replyroom': [], // [jids] Multi-user chat room to which replies should be sent
+//                                                                         'pubsub#send_item_subscribe': 1, // (1|0) Send items to new subscribers
+                                                                         'pubsub#persist_items': 1, // (0|1) Persist items to storage
+                                                                         'pubsub#max_items': -1, // Max number of items to persist
+                                                                         'pubsub#max_payload_size': 5120, // Max payload size in bytes
                                                                      }, printResult) }
         Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(node.text, printResult) }
         Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(node.text, printResult) }

@@ -33,7 +33,7 @@ XMPPClient
                 $elements: []
             }
             var value = config[key]
-            if('array' == typeof value)
+            if('object' == typeof value)
             {
                 for(var i in value)
                     element.$elements.push({ $name: 'value', $value: value[i] })
