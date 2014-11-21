@@ -252,7 +252,7 @@ XMLProtocol
                       })
     }
 
-    function sendDiscoverItems()
+    function sendDiscoItems()
     {
         return sendIQ({
                           from: jid,
@@ -269,7 +269,7 @@ XMLProtocol
                       })
     }
 
-    function sendDiscoverInfo(to, callback)
+    function sendDiscoInfo(to, callback)
     {
         return sendIQ({
                           from: jid,

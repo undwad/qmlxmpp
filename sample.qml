@@ -82,8 +82,8 @@ Window
         Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
-        Button { text: 'discover items'; onClicked: xmpp.sendDiscoverItems() }
-        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { id: model; ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoverInfo(model.get(currentIndex).jid, function(result){ result.print() }) } }
+        Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems() }
+        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { id: model; ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, function(result){ result.print() }) } }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 }
