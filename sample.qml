@@ -99,12 +99,13 @@ Window
             }
         })}
         RowLayout { Text { text: 'items:' } ComboBox { id: topnodes; model: ListModel { ListElement { text: "no discovered nodes" } } } }
-        RowLayout { Text { text: 'node:' } TextInput { id: nodeid; text: 'samplenode' } Text { text: 'name:' } TextInput { id: nodename; text: 'sample node' } }
-        Button { text: 'create node'; onClicked: xmpp.sendCreateNode(nodeid.text, {
-                                                                         'pubsub#title': nodename.text
+        RowLayout { Text { text: 'node:' } TextInput { id: node; text: 'samplenode' } Text { text: 'name:' } TextInput { id: nodeTitle; text: 'sample node' } TextInput { id: nodeDescription; text: 'sample description for sample node' } }
+        Button { text: 'create node'; onClicked: xmpp.sendCreateNode(node.text, {
+                                                                         'pubsub#title': nodeTitle.text,
+                                                                         'pubsub#description': nodeDescription.text
                                                                      }, printResult) }
-        Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(nodeid.text, printResult) }
-        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(nodeid.text, printResult) }
+        Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(node.text, printResult) }
+        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(node.text, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 

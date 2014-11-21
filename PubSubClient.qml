@@ -25,11 +25,23 @@ XMPPClient
         }
         var elements = result.x$.$elements
         for(var key in config)
-            elements.push({
-                              $name: 'field',
-                              var: key,
-                              value$: config[key]
-                          })
+        {
+            var element =
+            {
+                $name: 'field',
+                var: key,
+                $elements: []
+            }
+            var value = config[key]
+            if('array' == typeof value)
+            {
+                for(var i in value)
+                    element.$elements.push({ $name: 'value', $value: value[i] })
+            }
+            else
+                element.$elements.push({ $name: 'value', $value: value })
+            elements.push(element)
+        }
         return result
     }
 
