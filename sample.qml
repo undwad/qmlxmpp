@@ -25,7 +25,7 @@ Window
         onFailed: print(error)
     }
 
-    XMPPClient
+    PubSubClient
     {
         id: xmpp
         jid: from.text

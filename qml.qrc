@@ -3,5 +3,6 @@
         <file>sample.qml</file>
         <file>utils.js</file>
         <file>XMPPClient.qml</file>
+        <file>PubSubClient.qml</file>
     </qresource>
 </RCC>
