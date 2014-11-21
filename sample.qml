@@ -129,8 +129,8 @@ Window
                                                                          'pubsub#max_items': -1, // Max number of items to persist
                                                                          'pubsub#max_payload_size': 5120, // Max payload size in bytes
                                                                      }, printResult) }
-        Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(node.text, printResult) }
-        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(node.text, printResult) }
+        Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(topnodes.model.get(topnodes.currentText).node, printResult) }
+        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(topnodes.model.get(topnodes.currentText).node, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 
