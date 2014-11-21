@@ -14,6 +14,7 @@ XMLProtocol
 {
     id: root
     property string jid
+    property string barejid
     property string username
     property string resource
     property string password
@@ -60,6 +61,7 @@ XMLProtocol
         socket.host = url.host
         username = url.userName
         resource = url.fileName
+        barejid = username + '@' + socket.host
     }
 
     socket.onConnected:

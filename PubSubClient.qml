@@ -104,4 +104,47 @@ XMPPClient
                           }
                       }, callback)
     }
+
+    function sendGetNodeSubscriptions(node, callback)
+    {
+        return sendIQ({
+                          from: jid,
+                          to: pubsubjid,
+                          type: 'set',
+                          pubsub$:
+                          {
+                              xmlns: 'http://jabber.org/protocol/pubsub',
+                              subscriptions$: { }
+                          }
+                      }, callback)
+    }
+
+    function sendSubscribeToNode(node, callback)
+    {
+        return sendIQ({
+                          from: jid,
+                          to: pubsubjid,
+                          type: 'set',
+                          pubsub$:
+                          {
+                              xmlns: 'http://jabber.org/protocol/pubsub',
+                              subscribe$: { node: node, jid: jid }
+                          }
+                      }, callback)
+    }
+
+    function sendUnsubscribeFromNode(node, subid, callback)
+    {
+        return sendIQ({
+                          from: jid,
+                          to: pubsubjid,
+                          type: 'set',
+                          pubsub$:
+                          {
+                              xmlns: 'http://jabber.org/protocol/pubsub',
+                              unsubscribe$: { node: node, jid: jid, subid: subid }
+                          }
+                      }, callback)
+    }
+
 }

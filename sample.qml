@@ -131,6 +131,9 @@ Window
                                                                      }, printResult) }
         Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(topnodes.model.get(topnodes.currentText).node, printResult) }
         Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(topnodes.model.get(topnodes.currentText).node, printResult) }
+        Button { text: 'get subscriptions'; onClicked: xmpp.sendGetNodeSubscriptions(topnodes.model.get(topnodes.currentText).node, printResult) }
+        Button { text: 'subscribe node'; onClicked: xmpp.sendSubscribeToNode(topnodes.model.get(topnodes.currentText).node, printResult) }
+        Button { text: 'unsubscribe node'; onClicked: xmpp.sendUnsubscribeFromNode(topnodes.model.get(topnodes.currentText).node, null, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
 
