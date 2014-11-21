@@ -107,8 +107,11 @@ XMLProtocol
                 {
                     var handled = false
                     for(var key in object.$elements)
-                        if(handled = key in handler)
-                            handler[key](object)
+                    {
+                        var name = object.$elements[key].$name
+                        if(handled = name in handler)
+                            handler[name](object)
+                    }
                     if(handled)
                         return
                 }

@@ -86,7 +86,7 @@ Window
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
         Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems() }
-        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, function(result){ Utils.prettyPrint(result) }) } }
+        RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, printResult) } }
         RowLayout { Text { text: 'pubsub jid:' } TextInput { id: pubsub; text: 'pubsub.jabber.integra-s.com' } }
         Button { text: 'discover pubsub'; onClicked: xmpp.sendDiscoItems(pubsub.text, function(result){
             topnodes.model.clear()
@@ -100,9 +100,16 @@ Window
         })}
         RowLayout { Text { text: 'items:' } ComboBox { id: topnodes; model: ListModel { ListElement { text: "no discovered nodes" } } } }
         RowLayout { Text { text: 'node:' } TextInput { id: nodeid; text: 'samplenode' } Text { text: 'name:' } TextInput { id: nodename; text: 'sample node' } }
-        Button { text: 'create node'; onClicked: xmpp.sendCreateNode(nodeid.text, function(result){ Utils.prettyPrint(result) }) }
-        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(nodeid.text, function(result){ Utils.prettyPrint(result) }) }
+        Button { text: 'create node'; onClicked: xmpp.sendCreateNode(nodeid.text, {
+                                                                         'pubsub#title': nodename.text
+                                                                     }, printResult) }
+        Button { text: 'get node cfg'; onClicked: xmpp.sendGetNodeConfig(nodeid.text, printResult) }
+        Button { text: 'delete node'; onClicked: xmpp.sendDeleteNode(nodeid.text, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
     }
+
+    function printResult(result) { Utils.prettyPrint(result) }
 }
 
+/*
+ */
