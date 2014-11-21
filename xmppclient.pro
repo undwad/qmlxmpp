@@ -17,4 +17,5 @@ HEADERS += \
     dnsresolver.h \
     sslsocket.h \
     xmlprotocol.h \
-    stringutils.h
+    stringutils.h \
+    regtypes.h

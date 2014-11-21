@@ -140,6 +140,15 @@ XMLProtocol
              })
     }
 
+    function sendAnonAuth()
+    {
+        send({
+                 $name: 'auth',
+                 xmlns: 'urn:ietf:params:xml:ns:xmpp-sasl',
+                 mechanism: 'ANONYMOUS'
+             })
+    }
+
     function sendPlainAuth()
     {
         send({

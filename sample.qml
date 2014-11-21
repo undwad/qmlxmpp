@@ -1,5 +1,5 @@
 /*
-** main.qml by undwad
+** sample.qml by undwad
 ** xmpp client for qml example
 **
 ** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
@@ -78,7 +78,7 @@ Window
         CheckBox { text: 'autoconnect'; onCheckedChanged: xmpp.connectInterval = checked ? 5 : 0 }
         CheckBox { text: 'autoping'; onCheckedChanged: xmpp.pingInterval = checked ? 5 : 0 }
         Button { text: 'registration'; onClicked: xmpp.sendRegistration() }
-        Button { text: 'authenticate'; onClicked: xmpp.sendPlainAuth() }
+        RowLayout { Text { text: 'auth:' } Button { text: 'plain'; onClicked: xmpp.sendPlainAuth() } Button { text: 'anon'; onClicked: xmpp.sendAnonAuth() } }
         Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
