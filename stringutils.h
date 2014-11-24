@@ -17,6 +17,7 @@
 #include <QJSValue>
 #include <QQmlEngine>
 #include <QJsEngine>
+#include <QUuid>
 #include <QDebug>
 
 class StringUtils : public QObject
@@ -77,6 +78,8 @@ public slots:
         result.setProperty("userInfo", QJSValue(url.userInfo()));
         return result;
     }
+
+    QString newGUID() { return QUuid::createUuid().toString(); }
 
 private:
     QJSEngine* engine = nullptr;
