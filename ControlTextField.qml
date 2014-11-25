@@ -6,25 +6,25 @@ ColumnLayout
 {
     id: root
 
-    property real fontPointSize: 10
-    property real spacingFactor: 0.3
+    Presets { id: presets }
+
     property bool secret: false
 
-    spacing: label.font.pixelSize * spacingFactor
+    spacing: label.font.pixelSize * presets.spacingFactor
 
     Label
     {
         id: label
         color: 'navy'
         font.bold: true
-        font.pointSize: fontPointSize
+        font.pointSize: presets.fontPointSize
     }
 
     TextField
     {
         id: field
         textColor: 'black'
-        font.pointSize: fontPointSize
+        font.pointSize: presets.fontPointSize
         Layout.fillWidth: true
         placeholderText: label.text
         echoMode: !secret || mouse.pressed ? TextInput.Normal : TextInput.Password
@@ -39,6 +39,7 @@ ColumnLayout
             fillMode: Image.PreserveAspectFit
             source: 'images/eye.png'
             visible: root.secret
+            smooth: true
 
             MouseArea { id: mouse; anchors.fill: parent }
         }

@@ -7,12 +7,17 @@ ColumnLayout
 {
     id: root
 
+    Presets { id: presets }
+
+    spacing: presets.spacingFactor * header.font.pixelSize
+
     Label
     {
+        id: header
         text: qsTr('login')
         color: 'navy'
         font.bold: true
-        font.pointSize: 2 * username.fontPointSize
+        font.pointSize: presets.headerFontPointSize
     }
 
     ControlTextField
@@ -32,22 +37,18 @@ ColumnLayout
     {
         Layout.fillWidth: true
 
-        Text
+        ControlLinkLike
         {
-            Layout.fillWidth: true
-            textFormat: Text.RichText
-            text: '<a href=\"http://\">%1</a>'.arg(qsTr('register'))
-            font.pointSize: username.fontPointSize
-            onLinkActivated: print('REGISTER')
+            text: qsTr('register')
+            onClicked: print('REGISTER')
         }
 
-        Text
+        ControlLinkLike
         {
             visible: username.field.length > 0 && password.field.length > 0
-            textFormat: Text.RichText
-            text: '<a href=\"http://\">%1</a>'.arg(qsTr('login'))
-            font.pointSize: username.fontPointSize
-            onLinkActivated: print('LOGIN')
+            text: qsTr('login')
+            horizontalAlignment: Text.AlignRight
+            onClicked: print('LOGIN')
         }
     }
 
