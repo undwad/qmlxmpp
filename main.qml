@@ -28,14 +28,14 @@ Rectangle
         front: FormLogin
         {
             id: login
-            onLogin: print('LOGIN')
+            onLogin: print('LOGIN', username, password)
             onRegister: entrance.flipped = true
         }
 
         back: FormProfile
         {
             id: profile
-            onRegister: print('REGISTER')
+            onRegister: print('REGISTER', username, password, email, name)
             onBack: entrance.flipped = false
         }
 

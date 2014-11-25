@@ -3,76 +3,80 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
-ColumnLayout
+
+Rectangle
 {
     id: root
 
     Presets { id: presets }
 
     anchors.centerIn: parent
-    spacing: presets.spacingRatio * header.font.pixelSize
+    width: layout.spacing + layout.width + layout.spacing
+    height: layout.spacing + layout.height + layout.spacing
+    color: presets.transparentBackgroundColor
 
-    signal register()
+    signal register(string username, string password, string email, string name)
     signal back()
 
-    Label
+    ColumnLayout
     {
-        id: header
-        text: 'microblog'
-        color: 'navy'
-        font.bold: true
-        font.pointSize: presets.headerFontPointSize
-    }
+        id: layout
 
-    ControlTextField
-    {
-        id: username
-        label.text: qsTr('username')
-    }
+        anchors.centerIn: parent
+        spacing: presets.spacingRatio * header.font.pixelSize
 
-    ControlTextField
-    {
-        id: password
-        secret: true
-        label.text: qsTr('password')
-    }
-
-    ControlTextField
-    {
-        id: email
-        label.text: qsTr('email')
-        field.inputMethodHints: Qt.ImhEmailCharactersOnly
-    }
-
-    ControlTextField
-    {
-        id: name
-        label.text: qsTr('name')
-    }
-
-    RowLayout
-    {
-        Layout.fillWidth: true
-
-        ControlLinkLike
+        Label
         {
-            text: qsTr('back')
-            onClicked: back()
+            id: header
+            text: 'microblog'
+            color: 'navy'
+            font.bold: true
+            font.pointSize: presets.headerFontPointSize
         }
 
-        ControlLinkLike
+        ControlTextField
         {
-            enabled: username.field.length > 0 && password.field.length > 0 && email.field.length > 0
-            text: qsTr('register')
-            horizontalAlignment: Text.AlignRight
-            onClicked: register()
+            id: username
+            label.text: qsTr('username')
         }
-    }
 
-    Rectangle
-    {
-        anchors.fill: parent
-        anchors.margins: -root.spacing
-        color: presets.transparentBackgroundColor
+        ControlTextField
+        {
+            id: password
+            secret: true
+            label.text: qsTr('password')
+        }
+
+        ControlTextField
+        {
+            id: email
+            label.text: qsTr('email')
+            field.inputMethodHints: Qt.ImhEmailCharactersOnly
+        }
+
+        ControlTextField
+        {
+            id: name
+            label.text: qsTr('name')
+        }
+
+        RowLayout
+        {
+            Layout.fillWidth: true
+
+            ControlLinkLike
+            {
+                text: qsTr('back')
+                onClicked: back()
+            }
+
+            ControlLinkLike
+            {
+                enabled: username.field.length > 0 && password.field.length > 0 && email.field.length > 0
+                text: qsTr('register')
+                horizontalAlignment: Text.AlignRight
+                onClicked: register(username.field.text, password.field.text, email.field.text, name.field.text)
+            }
+        }
     }
 }

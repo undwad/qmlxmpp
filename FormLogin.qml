@@ -3,64 +3,67 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
-ColumnLayout
+Rectangle
 {
     id: root
 
     Presets { id: presets }
 
     anchors.centerIn: parent
-    spacing: presets.spacingRatio * header.font.pixelSize
+    width: layout.spacing + layout.width + layout.spacing
+    height: layout.spacing + layout.height + layout.spacing
+    color: presets.transparentBackgroundColor
 
-    signal login()
+    signal login(string username, string password)
     signal register()
 
-    Label
+    ColumnLayout
     {
-        id: header
-        text: 'microblog'
-        color: presets.headerFontColor
-        font.bold: true
-        font.pointSize: presets.headerFontPointSize
-    }
+        id: layout
 
-    ControlTextField
-    {
-        id: username
-        label.text: qsTr('username')
-    }
+        anchors.centerIn: parent
+        spacing: presets.spacingRatio * header.font.pixelSize
 
-    ControlTextField
-    {
-        id: password
-        secret: true
-        label.text: qsTr('password')
-    }
-
-    RowLayout
-    {
-        Layout.fillWidth: true
-
-        ControlLinkLike
+        Label
         {
-            text: qsTr('register')
-            onClicked: register()
+            id: header
+            text: 'microblog'
+            color: presets.headerFontColor
+            font.bold: true
+            font.pointSize: presets.headerFontPointSize
         }
 
-        ControlLinkLike
+        ControlTextField
         {
-            enabled: username.field.length > 0 && password.field.length > 0
-            text: qsTr('login')
-            horizontalAlignment: Text.AlignRight
-            onClicked: login()
-            onEnabledChanged: print(enabled)
+            id: username
+            label.text: qsTr('username')
         }
-    }
 
-    Rectangle
-    {
-        anchors.fill: parent
-        anchors.margins: -root.spacing
-        color: presets.transparentBackgroundColor
+        ControlTextField
+        {
+            id: password
+            secret: true
+            label.text: qsTr('password')
+        }
+
+        RowLayout
+        {
+            Layout.fillWidth: true
+
+            ControlLinkLike
+            {
+                text: qsTr('register')
+                onClicked: register()
+            }
+
+            ControlLinkLike
+            {
+                enabled: username.field.length > 0 && password.field.length > 0
+                text: qsTr('login')
+                horizontalAlignment: Text.AlignRight
+                onClicked: login(username.field.text, password.field.text)
+            }
+        }
+
     }
 }
