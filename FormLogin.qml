@@ -9,13 +9,17 @@ ColumnLayout
 
     Presets { id: presets }
 
-    spacing: presets.spacingFactor * header.font.pixelSize
+    anchors.centerIn: parent
+    spacing: presets.spacingRatio * header.font.pixelSize
+
+    signal login()
+    signal register()
 
     Label
     {
         id: header
-        text: qsTr('login')
-        color: 'navy'
+        text: 'microblog'
+        color: presets.headerFontColor
         font.bold: true
         font.pointSize: presets.headerFontPointSize
     }
@@ -40,16 +44,23 @@ ColumnLayout
         ControlLinkLike
         {
             text: qsTr('register')
-            onClicked: print('REGISTER')
+            onClicked: register()
         }
 
         ControlLinkLike
         {
-            visible: username.field.length > 0 && password.field.length > 0
+            enabled: username.field.length > 0 && password.field.length > 0
             text: qsTr('login')
             horizontalAlignment: Text.AlignRight
-            onClicked: print('LOGIN')
+            onClicked: login()
+            onEnabledChanged: print(enabled)
         }
     }
 
+    Rectangle
+    {
+        anchors.fill: parent
+        anchors.margins: -root.spacing
+        color: presets.transparentBackgroundColor
+    }
 }

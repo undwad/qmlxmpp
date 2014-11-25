@@ -5,22 +5,57 @@ import QtQuick.Layouts 1.1
 import 'utils.js' as Utils
 import atnix.web 1.0
 
-Window
+Rectangle
 {
-    visible: true
+    id: root
     width: 400
     height: 600
 
-    FormLogin
+    Image
     {
-        id: login
-        anchors.centerIn: parent
-
-        //Tracer { color: 'red' }
+        anchors.fill: parent
+        source: 'images/background.jpg'
+        fillMode: Image.PreserveAspectFit
     }
 
-    Component.onCompleted:
+    Flipable
     {
+        id: entrance
+        anchors.fill: parent
+
+        property bool flipped: false
+
+        front: FormLogin
+        {
+            id: login
+            onLogin: print('LOGIN')
+            onRegister: entrance.flipped = true
+        }
+
+        back: FormProfile
+        {
+            id: profile
+            onRegister: print('REGISTER')
+            onBack: entrance.flipped = false
+        }
+
+        transform: Rotation
+        {
+            id: rotation
+            origin.x: root.width / 2
+            origin.y: root.height / 2
+            axis.x: 0; axis.y: 1; axis.z: 0
+            angle: 0
+        }
+
+        states: State
+        {
+            PropertyChanges { target: rotation; angle: 180 }
+            when: entrance.flipped
+        }
+
+        transitions: Transition { NumberAnimation { target: rotation; property: "angle"; duration: 500 } }
     }
 
 }
+

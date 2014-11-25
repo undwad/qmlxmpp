@@ -2,24 +2,23 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
-RowLayout
+Text
 {
+    id: root
+
     Presets { id: presets }
 
-    property string text
-    property var horizontalAlignment
+    Layout.fillWidth: true
 
+    font.pointSize: presets.fontPointSize
+    font.underline: true
+    color: enabled ? presets.linkFontColor : presets.inactiveFontColor
 
     signal clicked()
 
-    Text
+    MouseArea
     {
-        Layout.fillWidth: true
         anchors.fill: parent
-        textFormat: Text.RichText
-        horizontalAlignment: parent.horizontalAlignment
-        text: '<a href=\"http://\">%1</a>'.arg(parent.text)
-        font.pointSize: presets.fontPointSize
-        onLinkActivated: clicked()
+        onClicked: root.clicked()
     }
 }

@@ -10,12 +10,12 @@ ColumnLayout
 
     property bool secret: false
 
-    spacing: label.font.pixelSize * presets.spacingFactor
+    spacing: label.font.pixelSize * presets.spacingRatio
 
     Label
     {
         id: label
-        color: 'navy'
+        color: presets.headerFontColor
         font.bold: true
         font.pointSize: presets.fontPointSize
     }
@@ -23,7 +23,7 @@ ColumnLayout
     TextField
     {
         id: field
-        textColor: 'black'
+        textColor: presets.textFontColor
         font.pointSize: presets.fontPointSize
         Layout.fillWidth: true
         placeholderText: label.text
