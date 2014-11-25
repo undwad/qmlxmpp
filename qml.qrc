@@ -4,5 +4,6 @@
         <file>utils.js</file>
         <file>XMPPClient.qml</file>
         <file>PubSubClient.qml</file>
+        <file>MicroBlogClient.qml</file>
     </qresource>
 </RCC>

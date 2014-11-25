@@ -26,7 +26,7 @@ Window
         onFailed: print(error)
     }
 
-    PubSubClient
+    ClientPubSub
     {
         id: xmpp
         jid: from.text
@@ -64,7 +64,7 @@ Window
         onPresence: print('PRESENCE', Utils.toPrettyString(stanza))
 
         onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
-        onError: print('ERROR', Utils.toPrettyString(stanza.stringify))
+        onError: print('ERROR', Utils.toPrettyString(stanza))
         onXmlError: print('XML ERROR', error)
         onTimeout: print('TIMEOUT')
     }

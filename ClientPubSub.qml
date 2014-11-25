@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-XMPPClient
+ClientXMPP
 {
     property string pubsubjid
 

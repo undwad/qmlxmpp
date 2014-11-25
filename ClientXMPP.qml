@@ -83,9 +83,11 @@ XMLProtocol
 
     onReceived:
     {
+        //Utils.prettyPrint(object)
+
         var name = object.$name
 
-        if('type' in object && 'error' === object.type)
+        if('failure' === name || ('type' in object && 'error' === object.type))
             error(object)
 
         if(name in this.handler)
