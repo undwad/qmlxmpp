@@ -11,12 +11,16 @@ Window
     width: 400
     height: 600
 
-    Presets { id: presets }
+    FormLogin
+    {
+        id: login
+        anchors.centerIn: parent
 
-//    ProfileForm
-//    {
-//        id: profile
-//        presets: presets
-//        anchors.fill: parent
-//    }
+        //Tracer { color: 'red' }
+    }
+
+    Component.onCompleted:
+    {
+    }
+
 }
