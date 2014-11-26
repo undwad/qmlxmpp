@@ -2,50 +2,58 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
+/*
+** ControlTextField.qml by undwad
+** text field with label qml control
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 ColumnLayout
 {
-    id: root
+    id: _
 
-    Presets { id: presets }
+    Presets { id: _presets }
 
     property bool secret: false
 
-    spacing: label.font.pixelSize * presets.spacingRatio
+    spacing: _label.font.pixelSize * _presets.spacingRatio
 
     Label
     {
-        id: label
-        color: presets.headerFontColor
+        id: _label
+        color: _presets.headerFontColor
         font.bold: true
-        font.pointSize: presets.fontPointSize
+        font.pointSize: _presets.fontPointSize
     }
 
     TextField
     {
-        id: field
-        textColor: presets.textFontColor
-        font.pointSize: presets.fontPointSize
+        id: _field
+        textColor: _presets.textFontColor
+        font.pointSize: _presets.fontPointSize
         Layout.fillWidth: true
-        placeholderText: label.text
-        echoMode: !secret || mouse.pressed ? TextInput.Normal : TextInput.Password
+        placeholderText: _label.text
+        echoMode: !secret || _mouse.pressed ? TextInput.Normal : TextInput.Password
 
         Image
         {
-            anchors.right: field.right
-            anchors.top: field.top
-            anchors.bottom: field.bottom
+            anchors.right: _field.right
+            anchors.top: _field.top
+            anchors.bottom: _field.bottom
             anchors.margins: 2
             width: height
             fillMode: Image.PreserveAspectFit
             source: 'images/eye.png'
-            visible: root.secret
+            visible: _.secret
             smooth: true
 
-            MouseArea { id: mouse; anchors.fill: parent }
+            MouseArea { id: _mouse; anchors.fill: parent }
         }
 
     }
 
-    property alias label: label
-    property alias field: field
+    property alias label: _label
+    property alias field: _field
 }

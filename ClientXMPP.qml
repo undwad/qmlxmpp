@@ -1,5 +1,5 @@
 /*
-** XMPPClient.qml by undwad
+** ClientXMPP.qml by undwad
 ** xmpp client object for qml
 **
 ** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
@@ -12,9 +12,9 @@ import 'utils.js' as Utils
 
 XMLProtocol
 {
-    id: root
-    property string jid
-    property string barejid
+    id: _
+    property string barejid: username + '@' + socket.host
+    property string jid: barejid + '/' + resource
     property string username
     property string resource
     property string password
@@ -57,7 +57,6 @@ XMLProtocol
         socket.host = url.host
         username = url.userName
         resource = url.fileName
-        barejid = username + '@' + socket.host
     }
 
     socket.onStateChanged:
@@ -330,7 +329,6 @@ XMLProtocol
 
     Timer
     {
-        id: connectTimer
         repeat: true
         interval: connectInterval * 1000
         triggeredOnStart: true
@@ -345,7 +343,6 @@ XMLProtocol
 
     Timer
     {
-        id: pingTimer
         repeat: true
         interval: pingInterval * 1000
         running: pingInterval > 0
@@ -361,7 +358,7 @@ XMLProtocol
                     timeout()
                 }
                 else
-                    sid = root.sendPing(root.socket.host)
+                    sid = _.sendPing(_.socket.host)
             }
         }
     }

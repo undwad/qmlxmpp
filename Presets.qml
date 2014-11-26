@@ -1,7 +1,17 @@
+/*
+** Presets.qml by undwad
+** qml project presets
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.0
 
 QtObject
 {
+    property string appName: 'microblog'
+
     property real fontPointSize: 12
     property real headerFontPointSize: 2 * fontPointSize
     property real spacingRatio: 0.3

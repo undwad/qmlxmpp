@@ -1,71 +1,88 @@
+/*
+** FormProfile.qml by undwad
+** simple profile qml form
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
-
 Rectangle
 {
-    id: root
+    id: _
 
-    Presets { id: presets }
+    Presets { id: _presets }
 
     property bool waiting: true
+    property string username
+    property string password
+    property string email
+    property string name
+    property string info
 
     anchors.centerIn: parent
-    width: layout.spacing + layout.width + layout.spacing
-    height: layout.spacing + layout.height + layout.spacing
-    color: presets.transparentBackgroundColor
+    width: _layout.spacing + _layout.width + _layout.spacing
+    height: _layout.spacing + _layout.height + _layout.spacing
+    color: _presets.transparentBackgroundColor
 
-    signal register(string username, string password, string email, string name, string info)
+    signal register()
     signal back()
 
     ColumnLayout
     {
-        id: layout
+        id: _layout
 
         anchors.centerIn: parent
-        spacing: presets.spacingRatio * header.font.pixelSize
+        spacing: _presets.spacingRatio * _header.font.pixelSize
 
         Label
         {
-            id: header
-            text: 'microblog'
+            id: _header
+            text: _presets.appName
             color: 'navy'
             font.bold: true
-            font.pointSize: presets.headerFontPointSize
+            font.pointSize: _presets.headerFontPointSize
         }
 
         ControlTextField
         {
-            id: username
+            id: _username
             label.text: qsTr('username')
+            field.text: username
         }
 
         ControlTextField
         {
-            id: password
+            id: _password
             secret: true
             label.text: qsTr('password')
+            field.text: password
         }
 
         ControlTextField
         {
-            id: email
+            id: _email
             label.text: qsTr('email')
             field.inputMethodHints: Qt.ImhEmailCharactersOnly
+            field.text: email
         }
 
         ControlTextField
         {
-            id: name
+            id: _name
             label.text: qsTr('name')
+            field.text: name
         }
 
         ControlTextField
         {
-            id: info
+            id: _info
             label.text: qsTr('info')
+            field.text: info
         }
 
         RowLayout
@@ -80,10 +97,18 @@ Rectangle
 
             ControlLinkButton
             {
-                enabled: !waiting && username.field.length > 0 && password.field.length > 0 && email.field.length > 0
+                enabled: !waiting && _username.field.length > 0 && _password.field.length > 0 && _email.field.length > 0
                 text: qsTr('register')
                 horizontalAlignment: Text.AlignRight
-                onClicked: register(username.field.text, password.field.text, email.field.text, name.field.text, info.field.text)
+                onClicked:
+                {
+                    username = _username.field.text
+                    password = _password.field.text
+                    email = _email.field.text
+                    name = _name.field.text
+                    info = _info.field.text
+                    register()
+                }
             }
         }
     }
@@ -91,6 +116,6 @@ Rectangle
     ControlWaiting
     {
         anchors.bottom: parent.bottom
-        waiting: root.waiting
+        waiting: _.waiting
     }
 }

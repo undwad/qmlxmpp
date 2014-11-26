@@ -1,3 +1,11 @@
+/*
+** FormLogin.qml by undwad
+** simple login qml form
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
@@ -5,47 +13,51 @@ import QtQuick.Layouts 1.1
 
 Rectangle
 {
-    id: root
+    id: _
 
-    Presets { id: presets }
+    Presets { id: _presets }
 
     property bool waiting: true
+    property string username
+    property string password
 
     anchors.centerIn: parent
-    width: layout.spacing + layout.width + layout.spacing
-    height: layout.spacing + layout.height + layout.spacing
-    color: presets.transparentBackgroundColor
+    width: _layout.spacing + _layout.width + _layout.spacing
+    height: _layout.spacing + _layout.height + _layout.spacing
+    color: _presets.transparentBackgroundColor
 
-    signal login(string username, string password)
+    signal login()
     signal register()
 
     ColumnLayout
     {
-        id: layout
+        id: _layout
 
         anchors.centerIn: parent
-        spacing: presets.spacingRatio * header.font.pixelSize
+        spacing: _presets.spacingRatio * _header.font.pixelSize
 
         Label
         {
-            id: header
-            text: 'microblog'
-            color: presets.headerFontColor
+            id: _header
+            text: _presets.appName
+            color: _presets.headerFontColor
             font.bold: true
-            font.pointSize: presets.headerFontPointSize
+            font.pointSize: _presets.headerFontPointSize
         }
 
         ControlTextField
         {
-            id: username
+            id: _username
             label.text: qsTr('username')
+            field.text: username
         }
 
         ControlTextField
         {
-            id: password
+            id: _password
             secret: true
             label.text: qsTr('password')
+            field.text: password
         }
 
         RowLayout
@@ -60,10 +72,15 @@ Rectangle
 
             ControlLinkButton
             {
-                enabled: !waiting && username.field.length > 0 && password.field.length > 0
+                enabled: !waiting && _username.field.length > 0 && _password.field.length > 0
                 text: qsTr('login')
                 horizontalAlignment: Text.AlignRight
-                onClicked: login(username.field.text, password.field.text)
+                onClicked:
+                {
+                    username = _username.field.text
+                    password = _password.field.text
+                    login()
+                }
             }
         }
     }
@@ -71,6 +88,6 @@ Rectangle
     ControlWaiting
     {
         anchors.bottom: parent.bottom
-        waiting: root.waiting
+        waiting: _.waiting
     }
 }

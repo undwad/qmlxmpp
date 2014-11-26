@@ -1,3 +1,11 @@
+/*
+** ClientPubSub.qml by undwad
+** pubsub xmpp client object for qml
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.0
 
 ClientXMPP

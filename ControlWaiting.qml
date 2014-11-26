@@ -1,8 +1,16 @@
+/*
+** ControlWaiting.qml by undwad
+** waiting for completition qml control
+**
+** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
+** see copyright notice in ./LICENCE
+*/
+
 import QtQuick 2.0
 
 Item
 {
-    id: root
+    id: _
 
     property color color: 'blue'
     property int count: 3
@@ -18,20 +26,20 @@ Item
     {
         id: repeater
 
-        model: root.count
+        model: _.count
 
         delegate: Rectangle
         {
-            height: root.height
+            height: _.height
             width: height
-            color: root.color
+            color: _.color
 
             NumberAnimation
             {
                 id: animation
-                from: 0; to: root.width - root.height
+                from: 0; to: _.width - _.height
                 properties: "x"
-                duration: root.duration
+                duration: _.duration
                 easing.type: Easing.OutInQuad
                 onRunningChanged:
                 {
@@ -48,10 +56,10 @@ Item
     {
         property int index: 0
 
-        interval: root.duration / root.count
+        interval: _.duration / _.count
         repeat: true
         triggeredOnStart: true
-        running: root.waiting
+        running: _.waiting
 
         onTriggered:
         {
