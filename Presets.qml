@@ -20,5 +20,5 @@ QtObject
     property color headerFontColor: 'navy'
     property color inactiveFontColor: 'gray'
     property color textFontColor: 'black'
-    property color transparentBackgroundColor: Qt.rgba(0, 0, 0, 0.5)
+    property color transparentBackgroundColor: Qt.rgba(0.5, 0.5, 0.5, 0.5)
 }

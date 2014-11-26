@@ -7,9 +7,10 @@
 */
 
 import QtQuick 2.3
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import Qt.labs.settings 1.0
+import atnix.web 1.0
 
 Rectangle
 {
@@ -20,6 +21,7 @@ Rectangle
     property bool waiting: true
     property string username
     property string password
+    property bool save
 
     anchors.centerIn: parent
     width: _layout.spacing + _layout.width + _layout.spacing
@@ -60,6 +62,13 @@ Rectangle
             field.text: password
         }
 
+        ControlCheckBox
+        {
+            id: _save
+            text: qsTr('save password')
+            checked: save
+        }
+
         RowLayout
         {
             Layout.fillWidth: true
@@ -79,6 +88,8 @@ Rectangle
                 {
                     username = _username.field.text
                     password = _password.field.text
+                    save = _save.checked
+                    _settings.password = StringUtils.toHex(save ? password : '')
                     login()
                 }
             }
@@ -90,4 +101,19 @@ Rectangle
         anchors.bottom: parent.bottom
         waiting: _.waiting
     }
+
+    Settings
+    {
+        id: _settings
+
+        category: "login"
+
+        property alias username: _.username
+        property alias save: _.save
+
+        property string password
+
+        Component.onCompleted: _.password = StringUtils.fromHex(password)
+    }
+
 }

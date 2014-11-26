@@ -25,7 +25,7 @@ Rectangle
     {
         id: _xmpp
         resource: _presets.appName
-        socket.host: 'jabber.integra-s.com'
+        socket.host: 'jabber1.integra-s.com'
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
@@ -34,8 +34,8 @@ Rectangle
 
         socket.onConnected: socket.ignoreSslErrors()
 
-        onConnecting: _entrance.front.waiting = _entrance.back.waiting = true
-        onEstablished: _entrance.front.waiting = _entrance.back.waiting = false
+        onConnecting: _enter.waiting = true
+        onEstablished: _enter.waiting = false
 
         socket.onError: print('SOCKET ERROR', socket.error)
         onError: print('ERROR', Utils.toPrettyString(stanza))
@@ -59,50 +59,12 @@ Rectangle
         fillMode: Image.PreserveAspectFit
     }
 
-    Flipable
+    FormEnter
     {
-        id: _entrance
-        anchors.fill: parent
-
-        property bool flipped: false
-
-        front: FormLogin
-        {
-            id: _login
-            onLogin: print('LOGIN', username, password)
-            onRegister: _entrance.flipped = true
-
-            Settings
-            {
-                category: "login"
-                property alias username: _login.username
-                property alias password: _login.password
-            }
-        }
-
-        back: FormProfile
-        {
-            id: _profile
-            onRegister: print('REGISTER', username, password, email, name, info)
-            onBack: _entrance.flipped = false
-        }
-
-        transform: Rotation
-        {
-            id: _rotation
-            origin.x: _.width / 2
-            origin.y: _.height / 2
-            axis.x: 0; axis.y: 1; axis.z: 0
-            angle: 0
-        }
-
-        states: State
-        {
-            PropertyChanges { target: _rotation; angle: 180 }
-            when: _entrance.flipped
-        }
-
-        transitions: Transition { NumberAnimation { target: _rotation; property: "angle"; duration: 500 } }
+        id: _enter
+        waiting: true
     }
+
+
 }
 
