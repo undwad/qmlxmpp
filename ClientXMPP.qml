@@ -28,15 +28,11 @@ XMLProtocol
     property int sid: 0
 
     property var features
-    property var items
 
     signal error(var stanza)
     signal unknown(var stanza)
     signal connecting()
     signal established()
-    signal registred()
-    signal authenticated()
-    signal discovered()
     signal presence(var stanza)
     signal message(var stanza)
     signal timeout()
@@ -47,7 +43,6 @@ XMLProtocol
         'stream:features': handleFeatures,
         failure: error,
         proceed: socket.startClientEncryption,
-        success: sendBindResource,
         iq:
         {
             'ping': handlePing
@@ -92,14 +87,12 @@ XMLProtocol
     {
         //Utils.prettyPrint(object)
 
-        var name = object.$name
-
-        if('failure' === name || ('type' in object && 'error' === object.type))
+        if(isError(object))
             error(object)
 
-        if(name in this.handler)
+        if(object.$name in this.handler)
         {
-            var handler = this.handler[name]
+            var handler = this.handler[object.$name]
             switch(typeof handler)
             {
             case 'function':
@@ -132,6 +125,8 @@ XMLProtocol
         unknown(object)
     }
 
+    function isError(object) { return 'failure' === object.$name || ('type' in object && 'error' === object.type) }
+
     function sendInit()
     {
         send({
@@ -153,8 +148,26 @@ XMLProtocol
              })
     }
 
-    function sendAnonAuth()
+    function setAuthCallbackChain(callback)
     {
+        handler.success = function(result)
+        {
+            if(isError(result))
+                callback(result)
+            else
+                sendBindResource(function(result)
+                {
+                    if(isError(result))
+                        callback(result)
+                    else
+                        sendStartSession(callback)
+                })
+        }
+    }
+
+    function sendAnonAuth(callback)
+    {
+        setAuthCallbackChain(callback)
         send({
                  $name: 'auth',
                  xmlns: 'urn:ietf:params:xml:ns:xmpp-sasl',
@@ -162,8 +175,9 @@ XMLProtocol
              })
     }
 
-    function sendPlainAuth()
+    function sendPlainAuth(callback)
     {
+        setAuthCallbackChain(callback)
         send({
                  $name: 'auth',
                  xmlns: 'urn:ietf:params:xml:ns:xmpp-sasl',
@@ -200,7 +214,7 @@ XMLProtocol
         return id
     }
 
-    function sendBindResource()
+    function sendBindResource(callback)
     {
         return sendIQ({
                           type: 'set',
@@ -209,15 +223,15 @@ XMLProtocol
                               xmlns: 'urn:ietf:params:xml:ns:xmpp-bind',
                               resource$: resource
                           }
-                      }, sendStartSession)
+                      }, callback)
     }
 
-    function sendStartSession()
+    function sendStartSession(callback)
     {
         return sendIQ({
                           type: 'set',
                           session$: { xmlns: 'urn:ietf:params:xml:ns:xmpp-session' }
-                      }, authenticated)
+                      }, callback)
     }
 
     function sendPing(to, callback)
@@ -246,7 +260,7 @@ XMLProtocol
                  })
     }
 
-    function sendRegistration()
+    function sendRegistration(callback)
     {
         return sendIQ({
                           type: 'set',
@@ -258,11 +272,7 @@ XMLProtocol
                               email$: email,
                               name$: name
                           }
-                      }, function(result)
-                      {
-                          if('result' === result.type)
-                            registred()
-                      })
+                      }, callback)
     }
 
     function sendGetRegistration(callback)
@@ -277,18 +287,10 @@ XMLProtocol
     {
         return sendIQ({
                           from: jid,
-                          to: to || socket.host,
+                          to: to,
                           type: 'get',
                           query$: { xmlns: 'http://jabber.org/protocol/disco#items' }
-                      }, callback || function(result)
-                      {
-                          if('result' === result.type)
-                          {
-                              var query = Utils.toObject(result.$elements, '$name').query
-                              items = Utils.toObject(query.$elements, 'jid')
-                              discovered()
-                          }
-                      })
+                      }, callback)
     }
 
     function sendDiscoInfo(to, callback)

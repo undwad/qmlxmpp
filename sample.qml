@@ -52,17 +52,8 @@ Window
 
         onConnecting: print('CONNECTING')
         onEstablished: print('ESTABLISHED')
-        onRegistred: print('REGISTRED')
-        onAuthenticated: print('AUTHENTICATED')
-        onDiscovered:
-        {
-            print('DISCOVERED')
-            itemlist.model.clear()
-            for(var jid in items)
-                itemlist.model.append({text: items[jid].name, jid: jid})
-        }
-        onMessage: print('MESSAGE', Utils.toPrettyString(stanza))
-        onPresence: print('PRESENCE', Utils.toPrettyString(stanza))
+        onMessage: if(!xmpp.isError(stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
+        onPresence: if(!xmpp.isError(stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
 
         onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
         onError: print('ERROR', Utils.toPrettyString(stanza))
@@ -81,12 +72,19 @@ Window
         RowLayout { Text { text: 'message/status:' } TextInput { id: msg; text: 'хуй гортензия' } }
         CheckBox { text: 'autoconnect'; onCheckedChanged: xmpp.connectInterval = checked ? 5 : 0 }
         CheckBox { text: 'autoping'; onCheckedChanged: xmpp.pingInterval = checked ? 5 : 0 }
-        RowLayout { Button { text: 'registration'; onClicked: xmpp.sendRegistration() } Button { text: 'info'; onClicked: xmpp.sendGetRegistration(printResult) } }
-        RowLayout { Text { text: 'auth:' } Button { text: 'plain'; onClicked: xmpp.sendPlainAuth() } Button { text: 'anon'; onClicked: xmpp.sendAnonAuth() } }
+        RowLayout { Button { text: 'registration'; onClicked: xmpp.sendRegistration(printResult) } Button { text: 'info'; onClicked: xmpp.sendGetRegistration(printResult) } }
+        RowLayout { Text { text: 'auth:' } Button { text: 'plain'; onClicked: xmpp.sendPlainAuth(printResult) } Button { text: 'anon'; onClicked: xmpp.sendAnonAuth(printResult) } }
         Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
-        Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems() }
+        Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems(xmpp.socket.host, function(result)
+        {
+            var query = Utils.toObject(result.$elements, '$name').query
+            var items = Utils.toObject(query.$elements, 'jid')
+            itemlist.model.clear()
+            for(var jid in items)
+                itemlist.model.append({text: items[jid].name, jid: jid})
+        }) }
         RowLayout { Text { text: 'items:' } ComboBox { id: itemlist; model: ListModel { ListElement { text: "no discovered items" } } onCurrentIndexChanged: xmpp.sendDiscoInfo(model.get(currentIndex).jid, printResult) } }
         RowLayout { Text { text: 'pubsub jid:' } TextInput { id: pubsub; text: 'pubsub.jabber.integra-s.com' } }
         Button { text: 'discover pubsub'; onClicked: xmpp.sendDiscoItems(pubsub.text, function(result){
