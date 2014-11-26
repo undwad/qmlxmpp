@@ -9,6 +9,8 @@ Rectangle
 
     Presets { id: presets }
 
+    property bool waiting: true
+
     anchors.centerIn: parent
     width: layout.spacing + layout.width + layout.spacing
     height: layout.spacing + layout.height + layout.spacing
@@ -58,12 +60,17 @@ Rectangle
 
             ControlLinkButton
             {
-                enabled: username.field.length > 0 && password.field.length > 0
+                enabled: !waiting && username.field.length > 0 && password.field.length > 0
                 text: qsTr('login')
                 horizontalAlignment: Text.AlignRight
                 onClicked: login(username.field.text, password.field.text)
             }
         }
+    }
 
+    ControlWaiting
+    {
+        anchors.bottom: parent.bottom
+        waiting: root.waiting
     }
 }

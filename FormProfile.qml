@@ -10,6 +10,8 @@ Rectangle
 
     Presets { id: presets }
 
+    property bool waiting: true
+
     anchors.centerIn: parent
     width: layout.spacing + layout.width + layout.spacing
     height: layout.spacing + layout.height + layout.spacing
@@ -78,11 +80,17 @@ Rectangle
 
             ControlLinkButton
             {
-                enabled: username.field.length > 0 && password.field.length > 0 && email.field.length > 0
+                enabled: !waiting && username.field.length > 0 && password.field.length > 0 && email.field.length > 0
                 text: qsTr('register')
                 horizontalAlignment: Text.AlignRight
                 onClicked: register(username.field.text, password.field.text, email.field.text, name.field.text, info.field.text)
             }
         }
+    }
+
+    ControlWaiting
+    {
+        anchors.bottom: parent.bottom
+        waiting: root.waiting
     }
 }
