@@ -50,13 +50,13 @@ Rectangle
         {
             Layout.fillWidth: true
 
-            ControlLinkLike
+            ControlLinkButton
             {
                 text: qsTr('register')
                 onClicked: register()
             }
 
-            ControlLinkLike
+            ControlLinkButton
             {
                 enabled: username.field.length > 0 && password.field.length > 0
                 text: qsTr('login')

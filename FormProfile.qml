@@ -64,13 +64,13 @@ Rectangle
         {
             Layout.fillWidth: true
 
-            ControlLinkLike
+            ControlLinkButton
             {
                 text: qsTr('back')
                 onClicked: back()
             }
 
-            ControlLinkLike
+            ControlLinkButton
             {
                 enabled: username.field.length > 0 && password.field.length > 0 && email.field.length > 0
                 text: qsTr('register')
