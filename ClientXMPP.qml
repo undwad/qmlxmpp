@@ -32,6 +32,7 @@ XMLProtocol
 
     signal error(var stanza)
     signal unknown(var stanza)
+    signal connecting()
     signal established()
     signal registred()
     signal authenticated()
@@ -62,6 +63,12 @@ XMLProtocol
         username = url.userName
         resource = url.fileName
         barejid = username + '@' + socket.host
+    }
+
+    socket.onStateChanged:
+    {
+        if(SSLSocket.ConnectingState === socket.state)
+            connecting()
     }
 
     socket.onConnected:
@@ -256,6 +263,14 @@ XMLProtocol
                           if('result' === result.type)
                             registred()
                       })
+    }
+
+    function sendGetRegistration(callback)
+    {
+        return sendIQ({
+                          type: 'get',
+                          query$: { xmlns: 'jabber:iq:register' }
+                      }, callback)
     }
 
     function sendDiscoItems(to, callback)

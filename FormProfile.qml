@@ -15,7 +15,7 @@ Rectangle
     height: layout.spacing + layout.height + layout.spacing
     color: presets.transparentBackgroundColor
 
-    signal register(string username, string password, string email, string name)
+    signal register(string username, string password, string email, string name, string info)
     signal back()
 
     ColumnLayout
@@ -60,6 +60,12 @@ Rectangle
             label.text: qsTr('name')
         }
 
+        ControlTextField
+        {
+            id: info
+            label.text: qsTr('info')
+        }
+
         RowLayout
         {
             Layout.fillWidth: true
@@ -75,7 +81,7 @@ Rectangle
                 enabled: username.field.length > 0 && password.field.length > 0 && email.field.length > 0
                 text: qsTr('register')
                 horizontalAlignment: Text.AlignRight
-                onClicked: register(username.field.text, password.field.text, email.field.text, name.field.text)
+                onClicked: register(username.field.text, password.field.text, email.field.text, name.field.text, info.field.text)
             }
         }
     }

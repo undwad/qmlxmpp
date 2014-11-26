@@ -50,6 +50,7 @@ Window
         socket.onDisconnected: print('DISCONNECTED')
         socket.onError: print('SOCKET ERROR', socket.error)
 
+        onConnecting: print('CONNECTING')
         onEstablished: print('ESTABLISHED')
         onRegistred: print('REGISTRED')
         onAuthenticated: print('AUTHENTICATED')
@@ -80,7 +81,7 @@ Window
         RowLayout { Text { text: 'message/status:' } TextInput { id: msg; text: 'хуй гортензия' } }
         CheckBox { text: 'autoconnect'; onCheckedChanged: xmpp.connectInterval = checked ? 5 : 0 }
         CheckBox { text: 'autoping'; onCheckedChanged: xmpp.pingInterval = checked ? 5 : 0 }
-        Button { text: 'registration'; onClicked: xmpp.sendRegistration() }
+        RowLayout { Button { text: 'registration'; onClicked: xmpp.sendRegistration() } Button { text: 'info'; onClicked: xmpp.sendGetRegistration(printResult) } }
         RowLayout { Text { text: 'auth:' } Button { text: 'plain'; onClicked: xmpp.sendPlainAuth() } Button { text: 'anon'; onClicked: xmpp.sendAnonAuth() } }
         Button { text: 'ping'; onClicked: xmpp.sendPing(to.text, function(result){ print('PONG', result.from, 'result' === result.type) }) }
         ComboBox { model: ListModel { ListElement { text: "unavailable" } ListElement { text: "chat" } ListElement { text: "away" } ListElement { text: "xa" } ListElement { text: "dnd" } } onCurrentTextChanged: xmpp.sendPresence(currentText) }
