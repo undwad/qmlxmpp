@@ -1,11 +1,3 @@
-/*
-** ControlTextField.qml by undwad
-** text field with label qml control
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1

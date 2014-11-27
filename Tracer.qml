@@ -1,11 +1,3 @@
-/*
-** Tracer.qml by undwad
-** simple control tracer
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.0
 
 Item

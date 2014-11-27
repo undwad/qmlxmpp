@@ -1,11 +1,3 @@
-/*
-** FormEnter.qml by undwad
-** simple entrance qml form
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 
@@ -21,15 +13,21 @@ Flipable
     {
         id: _login
         waiting: _.waiting
-        onLogin: print('LOGIN', username, password, save)
-        onRegister: _.flipped = true
+        onLogin: print('LOGIN', username, password, autologin)
+        onRegister:
+        {
+            _profile.username = username
+            _profile.password = password
+            _profile.autologin = autologin
+            _.flipped = true
+        }
     }
 
     back: FormProfile
     {
         id: _profile
         waiting: _.waiting
-        onRegister: print('REGISTER', username, password, email, name, info)
+        onRegister: print('REGISTER', username, password, email, name, autologin)
         onBack: _.flipped = false
     }
 

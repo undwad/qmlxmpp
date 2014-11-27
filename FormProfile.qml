@@ -1,13 +1,4 @@
-/*
-** FormProfile.qml by undwad
-** simple profile qml form
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
@@ -20,9 +11,9 @@ Rectangle
     property bool waiting: true
     property string username
     property string password
+    property bool autologin
     property string email
     property string name
-    property string info
 
     anchors.centerIn: parent
     width: _layout.spacing + _layout.width + _layout.spacing
@@ -53,6 +44,7 @@ Rectangle
             id: _username
             label.text: qsTr('username')
             field.text: username
+            field.onTextChanged: username = field.text
         }
 
         ControlTextField
@@ -61,6 +53,14 @@ Rectangle
             secret: true
             label.text: qsTr('password')
             field.text: password
+            field.onTextChanged: password = field.text
+        }
+
+        ControlCheckBox
+        {
+            id: _autologin
+            text: qsTr('auto login')
+            checked: autologin
         }
 
         ControlTextField
@@ -69,6 +69,7 @@ Rectangle
             label.text: qsTr('email')
             field.inputMethodHints: Qt.ImhEmailCharactersOnly
             field.text: email
+            field.onTextChanged: email = field.text
         }
 
         ControlTextField
@@ -76,13 +77,7 @@ Rectangle
             id: _name
             label.text: qsTr('name')
             field.text: name
-        }
-
-        ControlTextField
-        {
-            id: _info
-            label.text: qsTr('info')
-            field.text: info
+            field.onTextChanged: name = field.text
         }
 
         RowLayout
@@ -100,15 +95,7 @@ Rectangle
                 enabled: !waiting && _username.field.length > 0 && _password.field.length > 0 && _email.field.length > 0
                 text: qsTr('register')
                 horizontalAlignment: Text.AlignRight
-                onClicked:
-                {
-                    username = _username.field.text
-                    password = _password.field.text
-                    email = _email.field.text
-                    name = _name.field.text
-                    info = _info.field.text
-                    register()
-                }
+                onClicked: register()
             }
         }
     }

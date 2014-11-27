@@ -1,11 +1,3 @@
-/*
-** Presets.qml by undwad
-** qml project presets
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.0
 
 QtObject

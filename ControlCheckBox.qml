@@ -1,13 +1,4 @@
-/*
-** ControlCheckBox.qml by undwad
-** check box control for qml
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
-import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.2
@@ -17,6 +8,8 @@ CheckBox
     id: _
 
     Presets { id: _presets }
+
+    Layout.fillWidth: true
 
     style: CheckBoxStyle
     {

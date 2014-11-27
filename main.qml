@@ -1,11 +1,3 @@
-/*
-** main.qml by undwad
-** micro blogging xmpp qml client
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
@@ -25,7 +17,7 @@ Rectangle
     {
         id: _xmpp
         resource: _presets.appName
-        socket.host: 'jabber1.integra-s.com'
+        socket.host: 'jabber.integra-s.com'
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5

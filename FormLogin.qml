@@ -1,11 +1,3 @@
-/*
-** FormLogin.qml by undwad
-** simple login qml form
-**
-** https://github.com/undwad/qmlxmpp mailto:undwad@mail.ru
-** see copyright notice in ./LICENCE
-*/
-
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
@@ -21,7 +13,7 @@ Rectangle
     property bool waiting: true
     property string username
     property string password
-    property bool save
+    property bool autologin
 
     anchors.centerIn: parent
     width: _layout.spacing + _layout.width + _layout.spacing
@@ -52,6 +44,7 @@ Rectangle
             id: _username
             label.text: qsTr('username')
             field.text: username
+            field.onTextChanged: username = field.text
         }
 
         ControlTextField
@@ -60,13 +53,27 @@ Rectangle
             secret: true
             label.text: qsTr('password')
             field.text: password
+            field.onTextChanged:
+            {
+                password = field.text
+                if(autologin)
+                    _settings.password = StringUtils.toHex(password)
+            }
         }
 
         ControlCheckBox
         {
-            id: _save
-            text: qsTr('save password')
-            checked: save
+            id: _autologin
+            text: qsTr('auto login')
+            checked: autologin
+            onCheckedChanged:
+            {
+                autologin = checked
+                if(autologin && password.length > 0)
+                    _settings.password = StringUtils.toHex(password)
+                else if(!autologin)
+                    _settings.password = ''
+            }
         }
 
         RowLayout
@@ -84,14 +91,7 @@ Rectangle
                 enabled: !waiting && _username.field.length > 0 && _password.field.length > 0
                 text: qsTr('login')
                 horizontalAlignment: Text.AlignRight
-                onClicked:
-                {
-                    username = _username.field.text
-                    password = _password.field.text
-                    save = _save.checked
-                    _settings.password = StringUtils.toHex(save ? password : '')
-                    login()
-                }
+                onClicked: login()
             }
         }
     }
@@ -109,7 +109,7 @@ Rectangle
         category: "login"
 
         property alias username: _.username
-        property alias save: _.save
+        property alias autologin: _.autologin
 
         property string password
 
