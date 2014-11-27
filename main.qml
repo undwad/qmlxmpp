@@ -56,7 +56,11 @@ Rectangle
         waiting: _waiter.waiting
     }
 
-    FormProblem { id: _problem }
+    FormProblem
+    {
+        id: _problem
+        interval: _xmpp.connectInterval
+    }
 
     ControlWaiting
     {

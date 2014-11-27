@@ -7,6 +7,8 @@ Rectangle
 
     Presets { id: _presets }
 
+    property real interval: 5
+
     visible: height > 0
     anchors.left: parent.left
     anchors.right: parent.right
@@ -51,7 +53,7 @@ Rectangle
     Timer
     {
         id: _timer
-        interval: 3000
+        interval: _.interval * 1000
         onTriggered:
         {
             _animation.from = _.height
