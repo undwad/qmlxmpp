@@ -18,19 +18,6 @@ Rectangle
 
     property real spacing: _presets.spacingRatio * _text.font.pixelSize
 
-    property string text
-
-    onTextChanged:
-    {
-        if(text)
-        {
-            _timer.start()
-            _animation.from = 0
-            _animation.to = spacing + _text.font.pixelSize + spacing
-            _animation.restart()
-        }
-    }
-
     Text
     {
         id: _text
@@ -39,7 +26,6 @@ Rectangle
         font.pointSize: _presets.fontPointSize
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        text: _.text
     }
 
     NumberAnimation
@@ -54,17 +40,22 @@ Rectangle
     {
         id: _timer
         interval: _.interval * 1000
-        onTriggered:
-        {
-            _animation.from = _.height
-            _animation.to = 0
-            _animation.restart()
-        }
+        onTriggered: hide()
+    }
+
+    function hide()
+    {
+        _animation.from = _.height
+        _animation.to = 0
+        _animation.restart()
     }
 
     function show(problem)
     {
-        text = ''
-        text = problem
+        _text.text = problem
+        _timer.restart()
+        _animation.from = 0
+        _animation.to = spacing + _text.font.pixelSize + spacing
+        _animation.restart()
     }
 }
