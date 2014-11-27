@@ -13,6 +13,7 @@ Flipable
     {
         id: _login
         waiting: _.waiting
+        enabled: !_.flipped
         onLogin: print('LOGIN', username, password, autologin)
         onRegister:
         {
@@ -27,6 +28,7 @@ Flipable
     {
         id: _profile
         waiting: _.waiting
+        enabled: _.flipped
         onRegister: print('REGISTER', username, password, email, name, autologin)
         onBack: _.flipped = false
     }

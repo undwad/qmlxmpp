@@ -56,13 +56,6 @@ Rectangle
             field.onTextChanged: password = field.text
         }
 
-        ControlCheckBox
-        {
-            id: _autologin
-            text: qsTr('auto login')
-            checked: autologin
-        }
-
         ControlTextField
         {
             id: _email
@@ -78,6 +71,13 @@ Rectangle
             label.text: qsTr('name')
             field.text: name
             field.onTextChanged: name = field.text
+        }
+
+        ControlCheckBox
+        {
+            id: _autologin
+            text: qsTr('auto login')
+            checked: autologin
         }
 
         RowLayout
