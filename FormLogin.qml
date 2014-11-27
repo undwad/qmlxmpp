@@ -96,12 +96,6 @@ Rectangle
         }
     }
 
-    ControlWaiting
-    {
-        anchors.bottom: parent.bottom
-        waiting: _.waiting
-    }
-
     Settings
     {
         id: _settings

@@ -99,10 +99,4 @@ Rectangle
             }
         }
     }
-
-    ControlWaiting
-    {
-        anchors.bottom: parent.bottom
-        waiting: _.waiting
-    }
 }

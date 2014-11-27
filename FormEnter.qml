@@ -7,7 +7,7 @@ Flipable
     anchors.fill: parent
 
     property bool flipped: false
-    property bool waiting
+    property bool waiting: true
 
     front: FormLogin
     {

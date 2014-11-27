@@ -61,7 +61,7 @@ XMLProtocol
 
     socket.onStateChanged:
     {
-        if(SSLSocket.ConnectingState === socket.state)
+        if(SSLSocket.ConnectingState === socket.state && !connectInterval)
             connecting()
     }
 
@@ -337,7 +337,10 @@ XMLProtocol
         onTriggered:
         {
             if(SSLSocket.UnconnectedState === socket.state)
+            {
+                connecting()
                 socket.connect()
+            }
         }
     }
 

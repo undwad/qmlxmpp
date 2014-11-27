@@ -4,15 +4,16 @@ Item
 {
     id: _
 
-    property color color: 'blue'
-    property int count: 3
+    property int count: 5
     property bool waiting: false
-    property int duration: 1500
+    property real duration: 1.5
+    property int attempts: 0
 
     visible: waiting
     height: 4
     anchors.left: parent.left
     anchors.right: parent.right
+    anchors.bottom: parent.bottom
 
     Repeater
     {
@@ -24,14 +25,13 @@ Item
         {
             height: _.height
             width: height
-            color: _.color
 
             NumberAnimation
             {
-                id: animation
+                id: _animation
                 from: 0; to: _.width - _.height
                 properties: "x"
-                duration: _.duration
+                duration: _.duration * 1000
                 easing.type: Easing.OutInQuad
                 onRunningChanged:
                 {
@@ -40,7 +40,7 @@ Item
                 }
             }
 
-            property alias animation: animation
+            property alias animation: _animation
         }
     }
 
@@ -48,7 +48,7 @@ Item
     {
         property int index: 0
 
-        interval: _.duration / _.count
+        interval: _.duration * 1000 / _.count
         repeat: true
         triggeredOnStart: true
         running: _.waiting
@@ -59,10 +59,23 @@ Item
             var item = repeater.itemAt(index)
             if(!item.animation.running)
             {
+                item.color = index + 2 > _.attempts ? 'blue' : 'red'
                 item.animation.target = item
                 item.animation.restart()
             }
             index++
         }
+    }
+
+    function wait()
+    {
+        waiting = true
+        attempts++
+    }
+
+    function stop()
+    {
+        waiting = false
+        attempts = 0
     }
 }

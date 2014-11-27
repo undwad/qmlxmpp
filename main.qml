@@ -18,20 +18,19 @@ Rectangle
         id: _xmpp
         resource: _presets.appName
         socket.host: 'jabber.integra-s.com'
-        socket.port: 5222
+        socket.port: 5224
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
-
         pubsubjid: 'pubsub.jabber.integra-s.com'
 
         socket.onConnected: socket.ignoreSslErrors()
 
-        onConnecting: _enter.waiting = true
-        onEstablished: _enter.waiting = false
+        onConnecting: _waiter.wait()
+        onEstablished: _waiter.stop()
 
         socket.onError: print('SOCKET ERROR', socket.error)
-        onError: print('ERROR', Utils.toPrettyString(stanza))
         onXmlError: print('XML ERROR', error)
+        onError: print('ERROR', Utils.toPrettyString(stanza))
 
         socket.onEncrypted: print("ENCRYPTED")
         socket.onReadyRead: print("READ", socket.bytesAvailable)
@@ -54,9 +53,21 @@ Rectangle
     FormEnter
     {
         id: _enter
-        waiting: true
+        waiting: _waiter.waiting
     }
 
+    FormProblem { id: _problem }
 
+    ControlWaiting
+    {
+        id: _waiter
+        onAttemptsChanged:
+        {
+            if(attempts > 3)
+            {
+                _problem.show(qsTr('service temporary unavailable'))
+                attempts = 0
+            }
+        }
+    }
 }
-
