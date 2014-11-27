@@ -20,7 +20,8 @@ function toObject(array, key)
     return object
 }
 
+function hasElementName(object, name) { return name in toObject(object.$elements || [], '$name') }
 
-
+function firstElementNameOrDefault(object, defname) { return '$elements' in object && object.$elements.length > 0 ? object.$elements[0].$name : defname }
 
 

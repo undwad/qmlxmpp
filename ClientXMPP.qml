@@ -36,12 +36,12 @@ XMLProtocol
     signal presence(var stanza)
     signal message(var stanza)
     signal timeout()
+    signal finished(var stanza)
 
     property var handler:
     {
         'stream:stream': function(){ },
         'stream:features': handleFeatures,
-        failure: error,
         proceed: socket.startClientEncryption,
         iq:
         {
@@ -51,13 +51,13 @@ XMLProtocol
         presence: presence
     }
 
-    onJidChanged:
-    {
-        var url = StringUtils.parseURL('jid://' + jid)
-        socket.host = url.host
-        username = url.userName
-        resource = url.fileName
-    }
+//    onJidChanged:
+//    {
+//        var url = StringUtils.parseURL('jid://' + jid)
+//        socket.host = url.host
+//        username = url.userName
+//        resource = url.fileName
+//    }
 
     socket.onStateChanged:
     {
@@ -86,45 +86,50 @@ XMLProtocol
     {
         //Utils.prettyPrint(object)
 
-        if(isError(object))
-            error(object)
-
-        if(object.$name in this.handler)
+        if('object' == typeof object)
         {
-            var handler = this.handler[object.$name]
-            switch(typeof handler)
+            if(isError(object))
+                error(object)
+
+            if(object.$name in this.handler)
             {
-            case 'function':
-                handler(object)
-                return
-            case 'object':
-                if('id' in object && object.id in handler)
+                var handler = this.handler[object.$name]
+                switch(typeof handler)
                 {
-                    var id = object.id
-                    var callback = handler[id]
-                    if(callback) callback(object)
-                    delete handler[id]
+                case 'function':
+                    handler(object)
                     return
-                }
-                else
-                {
-                    var handled = false
-                    for(var key in object.$elements)
+                case 'object':
+                    if('id' in object && object.id in handler)
                     {
-                        var name = object.$elements[key].$name
-                        if(handled = name in handler)
-                            handler[name](object)
-                    }
-                    if(handled)
+                        var id = object.id
+                        var callback = handler[id]
+                        if(callback) callback(object)
+                        delete handler[id]
                         return
+                    }
+                    else
+                    {
+                        var handled = false
+                        for(var key in object.$elements)
+                        {
+                            var name = object.$elements[key].$name
+                            if(handled = name in handler)
+                                handler[name](object)
+                        }
+                        if(handled)
+                            return
+                    }
                 }
             }
-        }
 
-        unknown(object)
+            unknown(object)
+        }
+        else
+            finished(object)
     }
 
-    function isError(object) { return 'failure' === object.$name || ('type' in object && 'error' === object.type) }
+    function isError(object) { return 'failure' === object.$name || 'stream:error' === object.$name || ('type' in object && 'error' === object.type) }
 
     function sendInit()
     {
@@ -149,6 +154,7 @@ XMLProtocol
 
     function setAuthCallbackChain(callback)
     {
+        handler.failure = callback
         handler.success = function(result)
         {
             if(isError(result))

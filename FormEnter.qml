@@ -6,15 +6,21 @@ Flipable
     id: _
     anchors.fill: parent
 
+    property ClientMicroBlog client
     property bool flipped: false
     property bool waiting: true
+
+    signal login()
+    signal register()
 
     front: FormLogin
     {
         id: _login
         waiting: _.waiting
         enabled: !_.flipped
-        onLogin: print('LOGIN', username, password, autologin)
+
+        onLogin: _.login()
+
         onRegister:
         {
             _profile.username = username
@@ -29,8 +35,22 @@ Flipable
         id: _profile
         waiting: _.waiting
         enabled: _.flipped
-        onRegister: print('REGISTER', username, password, email, name, autologin)
-        onBack: _.flipped = false
+
+        onRegister:
+        {
+            _login.username = username
+            _login.password = password
+            _login.autologin = autologin
+            _.register()
+        }
+
+        onBack:
+        {
+            _login.username = username
+            _login.password = password
+            _login.autologin = autologin
+            _.flipped = false
+        }
     }
 
     transform: Rotation
@@ -49,4 +69,36 @@ Flipable
     }
 
     transitions: Transition { NumberAnimation { target: _rotation; property: "angle"; duration: 500 } }
+
+    NumberAnimation
+    {
+        id: _hide
+        target: _
+        property: 'y'
+        from: 0
+        to: parent.height
+        onRunningChanged: if(!running) _.visible = false
+    }
+
+    NumberAnimation
+    {
+        id: _show
+        target: _
+        property: 'y'
+        from: parent.height
+        to: 0
+        onRunningChanged: if(!running) _.anchors.fill = parent
+    }
+
+    function hide()
+    {
+        anchors.fill = null
+        _hide.start()
+    }
+
+    function show()
+    {
+        visible = true
+        _show.start()
+    }
 }

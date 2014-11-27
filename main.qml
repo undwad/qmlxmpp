@@ -18,7 +18,7 @@ Rectangle
         id: _xmpp
         resource: _presets.appName
         socket.host: 'jabber.integra-s.com'
-        socket.port: 5224
+        socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
         pubsubjid: 'pubsub.jabber.integra-s.com'
@@ -26,7 +26,12 @@ Rectangle
         socket.onConnected: socket.ignoreSslErrors()
 
         onConnecting: _waiter.wait()
-        onEstablished: _waiter.stop()
+        onEstablished:
+        {
+            _waiter.stop()
+            //if(!_enter.visible)
+
+        }
 
         socket.onError: print('SOCKET ERROR', socket.error)
         onXmlError: print('XML ERROR', error)
@@ -37,6 +42,7 @@ Rectangle
         socket.onBytesWritten: print("WRITTEN", bytes)
         socket.onDisconnected: print('DISCONNECTED')
         onTimeout: print('TIMEOUT')
+        onFinished: print('FINISHED', stanza)
 
         onMessage: if(!isError(stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
         onPresence: if(!isError(stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
@@ -53,7 +59,27 @@ Rectangle
     FormEnter
     {
         id: _enter
+        client: _xmpp
         waiting: _waiter.waiting
+
+        onLogin:
+        {
+            _xmpp.username = front.username
+            _xmpp.password = front.password
+            _.login()
+        }
+
+        onRegister:
+        {
+            _xmpp.username = back.username
+            _xmpp.password = back.password
+            _xmpp.email = back.email
+            _xmpp.name = back.name
+            _xmpp.sendRegistration(function(result)
+            {
+                Utils.prettyPrint(result)
+            })
+        }
     }
 
     FormProblem
@@ -73,5 +99,30 @@ Rectangle
                 attempts = 0
             }
         }
+    }
+
+    function login()
+    {
+        _xmpp.sendPlainAuth(function(result)
+        {
+            if(_xmpp.isError(result))
+                _problem.show
+                (
+                    Utils.hasElementName(result, 'not-authorized')
+                    ?
+                    qsTr('invalid username or password')
+                    :
+                    Utils.firstElementNameOrDefault(result, qsTr('unknown error'))
+                )
+            else
+                _enter.hide()
+        })
+    }
+
+    Button
+    {
+        text: 'JODER'
+        anchors.bottom: parent.bottom
+        onClicked: _enter.show()
     }
 }
