@@ -52,8 +52,8 @@ Window
 
         onConnecting: print('CONNECTING')
         onEstablished: print('ESTABLISHED')
-        onMessage: if(!xmpp.isError(stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
-        onPresence: if(!xmpp.isError(stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
+        onMessage: if(!('$error' in stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
+        onPresence: if(!('$error' in stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
 
         onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
         onError: print('ERROR', Utils.toPrettyString(stanza))

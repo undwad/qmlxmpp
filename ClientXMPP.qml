@@ -88,8 +88,11 @@ XMLProtocol
 
         if('object' == typeof object)
         {
-            if(isError(object))
+            if('stream:error' === object.$name || 'failure' === object.$name || 'error' === object.type)
+            {
+                object.$error = object.$name
                 error(object)
+            }
 
             if(object.$name in this.handler)
             {
@@ -129,7 +132,27 @@ XMLProtocol
             finished(object)
     }
 
-    function isError(object) { return 'failure' === object.$name || 'stream:error' === object.$name || ('type' in object && 'error' === object.type) }
+    function parseError(object)
+    {
+        switch(object.$error)
+        {
+        case 'stream:error':
+        {
+            //var error = '$elements' in object && object[]
+            break;
+        }
+        case 'failure':
+            break;
+        case 'iq':
+            break;
+        case 'message':
+            break;
+        case 'presence':
+            break;
+        default:
+            return qsTr('unknown error')
+        }
+    }
 
     function sendInit()
     {
@@ -157,12 +180,12 @@ XMLProtocol
         handler.failure = callback
         handler.success = function(result)
         {
-            if(isError(result))
+            if('$error' in result)
                 callback(result)
             else
                 sendBindResource(function(result)
                 {
-                    if(isError(result))
+                    if('$error' in result)
                         callback(result)
                     else
                         sendStartSession(callback)

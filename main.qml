@@ -105,16 +105,7 @@ Rectangle
     {
         _xmpp.sendPlainAuth(function(result)
         {
-            if(_xmpp.isError(result))
-                _problem.show
-                (
-                    Utils.hasElementName(result, 'not-authorized')
-                    ?
-                    qsTr('invalid username or password')
-                    :
-                    Utils.firstElementNameOrDefault(result, qsTr('unknown error'))
-                )
-            else
+            if(!_xmpp.isError(result))
                 _enter.hide()
         })
     }
@@ -125,4 +116,10 @@ Rectangle
         anchors.bottom: parent.bottom
         onClicked: _enter.show()
     }
+
+    Component.onCompleted:
+    {
+
+    }
 }
+
