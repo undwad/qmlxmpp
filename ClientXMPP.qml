@@ -175,27 +175,27 @@ XMLProtocol
         }
     }
 
+    function parseErrorTag(tag)
+    {
+        var error = translateError(Utils.getNestedValue(tag, '$elements', 0, '$name') || 'unknown-error')
+        var extra = Utils.getNestedValue(tag, '$elements', Utils.toObject.bind(null, '$name'), 'text', '$value')
+        if(extra) error = '%1 (%2)'.arg(error).arg(extra)
+        return error
+    }
+
     function parseError(stanza)
     {
         switch(stanza.$error)
         {
         case 'stream:error':
         case 'failure':
-        {
-            var error = translateError(Utils.getNestedValue(stanza, '$elements', 0, '$name') || 'unknown-error')
-            var extra = Utils.getNestedValue(stanza, '$elements', Utils.toObject.bind(null, '$name'), 'text', '$value')
-            if(extra) error = '%1 (%2)'.arg(error).arg(extra)
-            return error
-        }
+            return parseErrorTag(stanza)
         case 'iq':
-            break;
         case 'message':
-            break;
         case 'presence':
-            break;
+            return parseErrorTag(Utils.getNestedValue(stanza, '$elements', Utils.toObject.bind(null, '$name'), 'error'))
         default: return qsTr('unknown error')
         }
-
     }
 
     function sendInit()

@@ -26,6 +26,7 @@ Rectangle
         font.pointSize: _presets.fontPointSize
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.WordWrap
     }
 
     NumberAnimation
@@ -43,6 +44,12 @@ Rectangle
         onTriggered: hide()
     }
 
+    MouseArea
+    {
+        anchors.fill: parent
+        onClicked: hide()
+    }
+
     function hide()
     {
         _animation.from = _.height
@@ -55,7 +62,7 @@ Rectangle
         _text.text = problem
         _timer.restart()
         _animation.from = 0
-        _animation.to = spacing + _text.font.pixelSize + spacing
+        _animation.to = spacing + _text.font.pixelSize + spacing + _text.font.pixelSize + spacing
         _animation.restart()
     }
 }
