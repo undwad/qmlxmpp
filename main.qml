@@ -21,7 +21,7 @@ Rectangle
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
-        pingInterval: 10
+        pingInterval: 30
         pubsubjid: 'pubsub.jabber.integra-s.com'
 
         socket.onConnected: socket.ignoreSslErrors()
