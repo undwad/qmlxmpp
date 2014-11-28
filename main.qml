@@ -21,12 +21,18 @@ Rectangle
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
+        pingInterval: 5
         pubsubjid: 'pubsub.jabber.integra-s.com'
 
         socket.onConnected: socket.ignoreSslErrors()
 
         onConnecting: _waiter.wait()
-        onEstablished: _waiter.stop()
+        onEstablished:
+        {
+            _waiter.stop()
+            if(!_enter.visible)
+                _.login()
+        }
 
         socket.onError: print('SOCKET ERROR', socket.error)
         onXmlError: print('XML ERROR', error)
@@ -99,7 +105,7 @@ Rectangle
     {
         text: 'JODER'
         anchors.bottom: parent.bottom
-        onClicked: _enter.show()
+        onClicked: login()
     }
 }
 
