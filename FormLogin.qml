@@ -94,7 +94,7 @@ Rectangle
                 onClicked: login()
                 onEnabledChanged:
                 {
-                    if(enabled && autologin)
+                    if(enabled && autologin && _.visible)
                         login()
                 }
             }

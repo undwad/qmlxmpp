@@ -21,7 +21,7 @@ Rectangle
         socket.port: 5222
         socket.protocol: SSLSocket.SslV3
         connectInterval: 5
-        pingInterval: 5
+        pingInterval: 10
         pubsubjid: 'pubsub.jabber.integra-s.com'
 
         socket.onConnected: socket.ignoreSslErrors()
@@ -38,9 +38,9 @@ Rectangle
         onXmlError: print('XML ERROR', error)
         onError: _problem.show(parseError(stanza))
 
-        socket.onEncrypted: print("ENCRYPTED")
-        socket.onReadyRead: print("READ", socket.bytesAvailable)
-        socket.onBytesWritten: print("WRITTEN", bytes)
+        //socket.onEncrypted: print("ENCRYPTED")
+        //socket.onReadyRead: print("READ", socket.bytesAvailable)
+        //socket.onBytesWritten: print("WRITTEN", bytes)
         socket.onDisconnected: print('DISCONNECTED')
         onTimeout: print('TIMEOUT')
         onFinished: print('FINISHED', stanza)
