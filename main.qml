@@ -26,16 +26,11 @@ Rectangle
         socket.onConnected: socket.ignoreSslErrors()
 
         onConnecting: _waiter.wait()
-        onEstablished:
-        {
-            _waiter.stop()
-            //if(!_enter.visible)
-
-        }
+        onEstablished: _waiter.stop()
 
         socket.onError: print('SOCKET ERROR', socket.error)
         onXmlError: print('XML ERROR', error)
-        onError: print('ERROR', Utils.toPrettyString(stanza))
+        onError: _problem.show(parseError(stanza))
 
         socket.onEncrypted: print("ENCRYPTED")
         socket.onReadyRead: print("READ", socket.bytesAvailable)
@@ -44,8 +39,8 @@ Rectangle
         onTimeout: print('TIMEOUT')
         onFinished: print('FINISHED', stanza)
 
-        onMessage: if(!isError(stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
-        onPresence: if(!isError(stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
+        onMessage: if(!('$error' in stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
+        onPresence: if(!('$error' in stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
         onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
     }
 
@@ -105,7 +100,7 @@ Rectangle
     {
         _xmpp.sendPlainAuth(function(result)
         {
-            if(!_xmpp.isError(result))
+            if(!('$error' in result))
                 _enter.hide()
         })
     }
@@ -115,11 +110,6 @@ Rectangle
         text: 'JODER'
         anchors.bottom: parent.bottom
         onClicked: _enter.show()
-    }
-
-    Component.onCompleted:
-    {
-
     }
 }
 

@@ -132,26 +132,70 @@ XMLProtocol
             finished(object)
     }
 
-    function parseError(object)
+    function translateError(error)
     {
-        switch(object.$error)
+        switch(error)
+        {
+        case 'bad-format': return qsTr('bad format')
+        case 'bad-namespace-prefix': return qsTr('bad namespace prefix')
+        case 'conflict': return qsTr('conflict')
+        case 'host-gone': return qsTr('host gone')
+        case 'host-unknown': return qsTr('unknown host')
+        case 'improper-addressing': return qsTr('improper addressing')
+        case 'invalid-from': return qsTr('invalid from')
+        case 'invalid-namespace': return qsTr('invalid namespace')
+        case 'invalid-xml': return qsTr('invalid xml')
+        case 'not-authorized': return qsTr('not authorized')
+        case 'not-well-formed': return qsTr('not well formed')
+        case 'policy-violation': return qsTr('policy violation')
+        case 'remote-connection-failed': return qsTr('remote connection failed')
+        case 'reset': return qsTr('reset')
+        case 'resource-constraint': return qsTr('resource constraint')
+        case 'restricted-xml': return qsTr('restricted xml')
+        case 'see-other-host': return qsTr('see other host')
+        case 'system-shutdown': return qsTr('system shutdown')
+        case 'undefined-condition': return qsTr('undefined condition')
+        case 'unsupported-encoding': return qsTr('unsupported encoding')
+        case 'unsupported-feature': return qsTr('unsupported feature')
+        case 'unsupported-stanza-type': return qsTr('unsupported stanza type')
+        case 'unsupported-version': return qsTr('unsupported version')
+        case 'aborted': return qsTr('aborted')
+        case 'account-disabled': return qsTr('account disabled')
+        case 'credentials-expired': return qsTr('credentials expired')
+        case 'encryption-required': return qsTr('encryption required')
+        case 'incorrect-encoding': return qsTr('incorrect encoding')
+        case 'invalid-authzid': return qsTr('invalid authzid')
+        case 'invalid-mechanism': return qsTr('invalid mechanism')
+        case 'malformed-request': return qsTr('malformed request')
+        case 'mechanism-too-weak': return qsTr('mechanism too weak')
+        case 'temporary-auth-failure': return qsTr('temporary auth failure')
+        //case '': return qsTr('')
+        case 'unknown-error': return qsTr('unknown error')
+        default: return error
+        }
+    }
+
+    function parseError(stanza)
+    {
+        switch(stanza.$error)
         {
         case 'stream:error':
-        {
-            //var error = '$elements' in object && object[]
-            break;
-        }
         case 'failure':
-            break;
+        {
+            var error = translateError(Utils.getNestedValue(stanza, '$elements', 0, '$name') || 'unknown-error')
+            var extra = Utils.getNestedValue(stanza, '$elements', Utils.toObject.bind(null, '$name'), 'text', '$value')
+            if(extra) error = '%1 (%2)'.arg(error).arg(extra)
+            return error
+        }
         case 'iq':
             break;
         case 'message':
             break;
         case 'presence':
             break;
-        default:
-            return qsTr('unknown error')
+        default: return qsTr('unknown error')
         }
+
     }
 
     function sendInit()
@@ -345,7 +389,7 @@ XMLProtocol
 
     function handleFeatures(object)
     {
-        features = Utils.toObject(object.$elements, '$name')
+        features = Utils.toObject('$name', object.$elements)
         if(!socket.isEncrypted)
         {
             if('starttls' in features) sendStartTLS()

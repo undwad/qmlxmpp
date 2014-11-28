@@ -79,8 +79,8 @@ Window
         Button { text: 'message'; onClicked: xmpp.sendMessage(to.text, msg.text) }
         Button { text: 'discover items'; onClicked: xmpp.sendDiscoItems(xmpp.socket.host, function(result)
         {
-            var query = Utils.toObject(result.$elements, '$name').query
-            var items = Utils.toObject(query.$elements, 'jid')
+            var query = Utils.toObject('$name', result.$elements).query
+            var items = Utils.toObject('jid', query.$elements)
             itemlist.model.clear()
             for(var jid in items)
                 itemlist.model.append({text: items[jid].name, jid: jid})
@@ -89,10 +89,10 @@ Window
         RowLayout { Text { text: 'pubsub jid:' } TextInput { id: pubsub; text: 'pubsub.jabber.integra-s.com' } }
         Button { text: 'discover pubsub'; onClicked: xmpp.sendDiscoItems(pubsub.text, function(result){
             topnodes.model.clear()
-            var query = Utils.toObject(result.$elements, '$name').query
+            var query = Utils.toObject('$name', result.$elements).query
             if('$elements' in query)
             {
-                var items = Utils.toObject(query.$elements, 'node')
+                var items = Utils.toObject('node', query.$elements)
                 for(var node in items)
                     topnodes.model.append({text: '%1(%2)'.arg(items[node].name).arg(node), node: node})
             }

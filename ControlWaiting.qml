@@ -17,7 +17,7 @@ Item
 
     Repeater
     {
-        id: repeater
+        id: _repeater
 
         model: _.count
 
@@ -55,8 +55,8 @@ Item
 
         onTriggered:
         {
-            index = index % repeater.count
-            var item = repeater.itemAt(index)
+            index = index % _repeater.count
+            var item = _repeater.itemAt(index)
             if(!item.animation.running)
             {
                 item.color = index + 2 > _.attempts ? 'blue' : 'red'
