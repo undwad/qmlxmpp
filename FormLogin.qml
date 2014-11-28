@@ -92,6 +92,11 @@ Rectangle
                 text: qsTr('login')
                 horizontalAlignment: Text.AlignRight
                 onClicked: login()
+                onEnabledChanged:
+                {
+                    if(enabled && autologin)
+                        login()
+                }
             }
         }
     }
