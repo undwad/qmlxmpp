@@ -212,6 +212,9 @@ XMLProtocol
         }
     }
 
+    function ifNotError(action, stanza) { if(!('$error' in stanza)) return action() }
+    function bindIfNotError(action) { return ifNotError.bind(null, action) }
+
     function sendInit()
     {
         send({

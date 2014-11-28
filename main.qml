@@ -70,10 +70,7 @@ Rectangle
             _xmpp.password = back.password
             _xmpp.email = back.email
             _xmpp.name = back.name
-            _xmpp.sendRegistration(function(result)
-            {
-                Utils.prettyPrint(result)
-            })
+            _xmpp.sendRegistration(_xmpp.bindIfNotError(_.login))
         }
     }
 
@@ -96,14 +93,7 @@ Rectangle
         }
     }
 
-    function login()
-    {
-        _xmpp.sendPlainAuth(function(result)
-        {
-            if(!('$error' in result))
-                _enter.hide()
-        })
-    }
+    function login() { _xmpp.sendPlainAuth(_xmpp.bindIfNotError(_enter.hide)) }
 
     Button
     {
