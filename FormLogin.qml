@@ -14,6 +14,7 @@ Rectangle
     property string username
     property string password
     property bool autologin
+    property bool touched: false
 
     anchors.centerIn: parent
     width: _layout.spacing + _layout.width + _layout.spacing
@@ -94,11 +95,17 @@ Rectangle
                 onClicked: login()
                 onEnabledChanged:
                 {
-                    if(enabled && autologin && _.visible)
+                    if(enabled && autologin && _.visible && !touched)
                         login()
                 }
             }
         }
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+        onClicked: touched = true
     }
 
     Settings
