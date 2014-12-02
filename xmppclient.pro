@@ -18,4 +18,5 @@ HEADERS += \
     sslsocket.h \
     xmlprotocol.h \
     stringutils.h \
-    regtypes.h
+    regtypes.h \
+    AsyncUtils.h

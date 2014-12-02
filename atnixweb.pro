@@ -14,7 +14,8 @@ HEADERS += \
     sslsocket.h \
     stringutils.h \
     xmlprotocol.h \
-    regtypes.h
+    regtypes.h \
+    asyncutils.h
 
 OTHER_FILES = qmldir_
 

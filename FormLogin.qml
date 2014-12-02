@@ -14,7 +14,6 @@ Rectangle
     property string username
     property string password
     property bool autologin
-    property bool touched: false
 
     anchors.centerIn: parent
     width: _layout.spacing + _layout.width + _layout.spacing
@@ -93,19 +92,21 @@ Rectangle
                 text: qsTr('login')
                 horizontalAlignment: Text.AlignRight
                 onClicked: login()
-                onEnabledChanged:
-                {
-                    if(enabled && autologin && _.visible && !touched)
-                        login()
-                }
+                onEnabledChanged: autologinTimer.restart()
             }
         }
     }
 
-    MouseArea
+    Timer
     {
-        anchors.fill: parent
-        onClicked: touched = true
+        id: autologinTimer
+        interval: 2000
+        onTriggered:
+        {
+            if(enabled && autologin && _.visible)
+                login()
+            stop()
+        }
     }
 
     Settings

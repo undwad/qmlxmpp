@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "asyncutils.h"
 #include "stringutils.h"
 #include "dnsresolver.h"
 #include "sslsocket.h"
@@ -17,6 +18,7 @@ void registerTypes()
 {
     // @uri atnix.web
     qmlRegisterSingletonType<StringUtils>("atnix.web", 1, 0, "StringUtils", StringUtils::provider);
+    qmlRegisterSingletonType<AsyncUtils>("atnix.web", 1, 0, "AsyncUtils", AsyncUtils::provider);
     qmlRegisterType<DNSResolver>("atnix.web", 1, 0, "DNSResolver");
     qmlRegisterType<SSLSocket>("atnix.web", 1, 0, "SSLSocket");
     qmlRegisterType<XMLProtocol>("atnix.web", 1, 0, "XMLProtocol");

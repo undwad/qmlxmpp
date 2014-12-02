@@ -134,6 +134,12 @@ Window
         Button { text: 'subscribe node'; onClicked: xmpp.sendSubscribeToNode(topnodes.model.get(topnodes.currentText).node, printResult) }
         Button { text: 'unsubscribe node'; onClicked: xmpp.sendUnsubscribeFromNode(topnodes.model.get(topnodes.currentText).node, null, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
+        Button { text: 'joder'; onClicked:
+            {
+
+                AsyncUtils.defer(2000, false)
+                AsyncUtils.defer(2000, function(){ print('JODER') }) }
+            }
     }
 
     function printResult(result) { Utils.prettyPrint(result) }

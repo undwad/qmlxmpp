@@ -2,8 +2,19 @@
     <qresource prefix="/">
         <file>sample.qml</file>
         <file>utils.js</file>
-        <file>XMPPClient.qml</file>
-        <file>PubSubClient.qml</file>
-        <file>MicroBlogClient.qml</file>
+        <file>ClientMicroBlog.qml</file>
+        <file>ClientPubSub.qml</file>
+        <file>ClientXMPP.qml</file>
+        <file>ControlCheckBox.qml</file>
+        <file>ControlLinkButton.qml</file>
+        <file>ControlTextField.qml</file>
+        <file>ControlWaiting.qml</file>
+        <file>FormEnter.qml</file>
+        <file>FormLogin.qml</file>
+        <file>FormProblem.qml</file>
+        <file>FormProfile.qml</file>
+        <file>main.qml</file>
+        <file>Presets.qml</file>
+        <file>Tracer.qml</file>
     </qresource>
 </RCC>
