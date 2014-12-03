@@ -100,12 +100,5 @@ Rectangle
     }
 
     function login() { _xmpp.sendPlainAuth(_xmpp.bindIfNotError(_enter.hide)) }
-
-    Button
-    {
-        text: 'JODER'
-        anchors.bottom: parent.bottom
-        onClicked: login()
-    }
 }
 

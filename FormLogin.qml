@@ -100,7 +100,7 @@ Rectangle
     Timer
     {
         id: autologinTimer
-        interval: 2000
+        interval: 1000
         onTriggered:
         {
             if(enabled && autologin && _.visible)
