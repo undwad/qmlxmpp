@@ -10,31 +10,37 @@ import QtQuick 2.3
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import QtWebKit 3.0
+import QtWebKit.experimental 1.0
 import 'utils.js' as Utils
 import atnix.web 1.0
 
 Window
 {
-    width: 300
+    id: _
+    width: 600
     height: 800
     visible: true
 
-    DNSResolver
-    {
-        host: 'jabber.org'
-        onResolved: print(host, ':', addresses)
-        onFailed: print(error)
-    }
 
-    ColumnLayout
+    WebView
     {
+        id: webview
+        url: 'https://zalupa.org/login'
         anchors.fill: parent
-        //RowLayout { Text { text: 'user jid:' } TextInput { id: from; text: 'undwad2@jabber.integra-s.com' } }
-        Button { text: 'joder'; onClicked:
-            {
 
-                AsyncUtils.defer(2000, false)
-                AsyncUtils.defer(2000, function(){ print('JODER') }) }
-            }
+        experimental.certificateVerificationDialog: Item
+        {
+            Component.onCompleted: model.accept();
+        }
+
+        onNavigationRequested:
+        {
+            var url = StringUtils.parseURL(request.url.toString())
+            Utils.prettyPrint(url)
+            request.action = WebView.AcceptRequest;
+        }
+
+        Tracer {}
     }
 }
