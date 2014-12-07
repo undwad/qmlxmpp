@@ -1,55 +1,51 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtWebKit 3.0
+import QtWebKit.experimental 1.0
+import QtQuick.Layouts 1.1
+import 'utils.js' as Utils
+import atnix.web 1.0
+
 
 Flipable
 {
     id: _
     anchors.fill: parent
 
-    property ClientMicroBlog client
+    property string url: 'https://zalupa.org/login?service='
+
     property bool flipped: false
-    property bool waiting: true
 
-    signal login()
-    signal register()
-
-    front: FormLogin
+    front: ColumnLayout
     {
-        id: _login
-        waiting: _.waiting
+        id: _services
+        anchors.fill: parent
         enabled: !_.flipped
-
-        onLogin: _.login()
-
-        onRegister:
-        {
-            _profile.username = username
-            _profile.password = password
-            _profile.autologin = autologin
-            _.flipped = true
-        }
+        ControlImageButton { source: 'images/google.svg'; onClicked: _webview.login(url + 'google') }
+        ControlImageButton { source: 'images/yandex.svg'; onClicked: _webview.login(url + 'yandex') }
     }
 
-    back: FormProfile
+    back: WebView
     {
-        id: _profile
-        waiting: _.waiting
+        id: _webview
+        anchors.fill: parent
         enabled: _.flipped
 
-        onRegister:
+        experimental.certificateVerificationDialog: Item { Component.onCompleted: model.accept(); }
+
+        onNavigationRequested:
         {
-            _login.username = username
-            _login.password = password
-            _login.autologin = autologin
-            _.register()
+            var url = StringUtils.parseURL(request.url.toString())
+            Utils.prettyPrint(url)
+            Utils.prettyPrint(StringUtils.parseURLQuery(url.query))
+            Utils.prettyPrint(StringUtils.parseURLQuery(url.fragment))
+            request.action = WebView.AcceptRequest;
         }
 
-        onBack:
+        function login(url)
         {
-            _login.username = username
-            _login.password = password
-            _login.autologin = autologin
-            _.flipped = false
+            _webview.url = url
+            _.flipped = true
         }
     }
 
