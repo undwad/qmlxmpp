@@ -19,4 +19,4 @@ HEADERS += \
     xmlprotocol.h \
     stringutils.h \
     regtypes.h \
-    AsyncUtils.h
+    asyncutils.h

@@ -2,7 +2,7 @@ import QmlProject 1.1
 
 Project
 {
-    mainFile: "sampleoauth.qml"
+    mainFile: "sample_oauth.qml"
 
     QmlFiles { directory: "." }
     JavaScriptFiles { directory: "." }

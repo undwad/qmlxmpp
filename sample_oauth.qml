@@ -38,6 +38,8 @@ Window
         {
             var url = StringUtils.parseURL(request.url.toString())
             Utils.prettyPrint(url)
+            Utils.prettyPrint(StringUtils.parseURLQuery(url.query))
+            Utils.prettyPrint(StringUtils.parseURLQuery(url.fragment))
             request.action = WebView.AcceptRequest;
         }
 

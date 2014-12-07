@@ -137,9 +137,15 @@ Window
         Button { text: 'joder'; onClicked:
             {
 
-                AsyncUtils.defer(2000, false)
-                AsyncUtils.defer(2000, function(){ print('JODER') }) }
+                AsyncUtils.defer(2000, function()
+                {
+                    var url = StringUtils.parseURL('https://zalupa.org#param1=value1&param2=value2')
+                    Utils.prettyPrint(url)
+                    Utils.prettyPrint(StringUtils.parseURLQuery(url.query))
+                    Utils.prettyPrint(StringUtils.parseURLQuery(url.fragment))
+                })
             }
+        }
     }
 
     function printResult(result) { Utils.prettyPrint(result) }

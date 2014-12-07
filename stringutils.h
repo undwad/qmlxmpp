@@ -14,6 +14,7 @@
 #include <QByteArray>
 #include <QCryptographicHash>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QJSValue>
 #include <QQmlEngine>
 #include <QJsEngine>
@@ -76,6 +77,15 @@ public slots:
         result.setProperty("url", QJSValue(url.url()));
         result.setProperty("userName", QJSValue(url.userName()));
         result.setProperty("userInfo", QJSValue(url.userInfo()));
+        return result;
+    }
+
+    QJSValue parseURLQuery(const QString& text)
+    {
+        QUrlQuery query(text);
+        QJSValue result = engine->newObject();
+        for(auto& item : query.queryItems())
+            result.setProperty(item.first, QJSValue(item.second));
         return result;
     }
 
