@@ -20,13 +20,18 @@ Window
     height: 800
     visible: true
 
+    property string token
+
     FormOAuth2
     {
         id: _oauth2
-        onLogin:
+
+
+        onLoggedIn:
         {
             hide()
-            Utils.prettyPrint(credentials)
+            _.token = token
+            Utils.prettyPrint(token)
         }
     }
 
@@ -40,17 +45,18 @@ Window
         onClicked:
         {
             var req = new XMLHttpRequest()
-            req.open('GET', 'https://zalupa.org/check', true)
+            req.open('GET', 'https://zalupa.org/login', true)
             req.onreadystatechange=function()
             {
-                if(4 === req.readyState)
+                if (XMLHttpRequest.HEADERS_RECEIVED === req.readyState)
+                      print(req.getAllResponseHeaders());
+                else if(XMLHttpRequest.DONE === req.readyState)
                 {
                     print('status', req.statusText)
                     print('response', req.responseText)
                 }
             }
-
-            req.send(null)
+            req.send('token=' + token)
         }
     }
 }

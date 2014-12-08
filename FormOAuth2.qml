@@ -15,7 +15,7 @@ Flipable
     property bool flipped: false
     property bool loading: _webview.loading
 
-    signal login(var credentials)
+    signal loggedIn(string token)
 
     front: ColumnLayout
     {
@@ -49,7 +49,7 @@ Flipable
             var url = StringUtils.parseURL(request.url.toString())
             if('/oauth2/ok' === url.path)
             {
-                login(StringUtils.parseURLQuery(url.fragment))
+                loggedIn(StringUtils.parseURLQuery(url.fragment).token)
                 request.action = WebView.IgnoreRequest;
             }
             request.action = WebView.AcceptRequest;
