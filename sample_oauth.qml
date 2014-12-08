@@ -31,4 +31,26 @@ Window
     }
 
     ControlWaiting { waiting: _oauth2.loading }
+
+    Button
+    {
+        text: 'JODER'
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        onClicked:
+        {
+            var req = new XMLHttpRequest()
+            req.open('GET', 'https://zalupa.org/check', true)
+            req.onreadystatechange=function()
+            {
+                if(4 === req.readyState)
+                {
+                    print('status', req.statusText)
+                    print('response', req.responseText)
+                }
+            }
+
+            req.send(null)
+        }
+    }
 }
