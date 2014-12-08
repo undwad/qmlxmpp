@@ -23,6 +23,12 @@ Window
     FormOAuth2
     {
         id: _oauth2
+        onLogin:
+        {
+            hide()
+            Utils.prettyPrint(credentials)
+        }
     }
 
+    ControlWaiting { waiting: _oauth2.loading }
 }

@@ -12,17 +12,19 @@ Flipable
     id: _
     anchors.fill: parent
 
-    property string url: 'https://zalupa.org/login?service='
-
     property bool flipped: false
+    property bool loading: _webview.loading
+
+    signal login(var credentials)
 
     front: ColumnLayout
     {
         id: _services
         anchors.fill: parent
         enabled: !_.flipped
-        ControlImageButton { source: 'images/google.svg'; onClicked: _webview.login(url + 'google') }
-        ControlImageButton { source: 'images/yandex.svg'; onClicked: _webview.login(url + 'yandex') }
+        ControlHeader { id: _header; text: qsTr('login via:') }
+        ControlImageButton { source: 'images/google.svg'; onClicked: _webview.loginVia('google') }
+        ControlImageButton { source: 'images/yandex.svg'; onClicked: _webview.loginVia('yandex') }
     }
 
     back: WebView
@@ -31,22 +33,34 @@ Flipable
         anchors.fill: parent
         enabled: _.flipped
 
+        ControlImageButton
+        {
+            source: 'images/back.svg';
+            width: _header.font.pixelSize;
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            onClicked: _.flipped = false
+        }
+
         experimental.certificateVerificationDialog: Item { Component.onCompleted: model.accept(); }
 
         onNavigationRequested:
         {
             var url = StringUtils.parseURL(request.url.toString())
-            Utils.prettyPrint(url)
-            Utils.prettyPrint(StringUtils.parseURLQuery(url.query))
-            Utils.prettyPrint(StringUtils.parseURLQuery(url.fragment))
+            if('/oauth2/ok' === url.path)
+            {
+                login(StringUtils.parseURLQuery(url.fragment))
+                request.action = WebView.IgnoreRequest;
+            }
             request.action = WebView.AcceptRequest;
         }
 
-        function login(url)
+        function loginVia(service)
         {
-            _webview.url = url
+            _webview.url = 'https://zalupa.org/oauth2/login?service=' + service
             _.flipped = true
         }
+
     }
 
     transform: Rotation
