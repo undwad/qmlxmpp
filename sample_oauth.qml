@@ -26,7 +26,6 @@ Window
     {
         id: _oauth2
 
-
         onLoggedIn:
         {
             hide()
@@ -36,4 +35,38 @@ Window
     }
 
     ControlWaiting { waiting: _oauth2.loading }
+
+    HTTPClient
+    {
+        id: _http
+        host: 'zalupa.org'
+        onNetworkAccessibleChanged: print('accessible', HTTPClient.Accessible === networkAccessible)
+        onSslErrors: print('SSL ERRORS', errors)
+        Component.onCompleted: connectEncrypted()
+    }
+
+    ColumnLayout
+    {
+        Button { text: 'test error1'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org1', {}, httpRequestCallback) }
+        Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1', {}, httpRequestCallback) }
+        Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token + '1', {}, httpRequestCallback) }
+        Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token, {}, httpRequestCallback) }
+
+    }
+
+    function httpRequestCallback(headers, data)
+    {
+        if(headers)
+        {
+            if('content-type' in headers)
+            {
+                print('JODER')
+                Utils.prettyPrint(headers)
+                print(data)
+            }
+        }
+        else
+            print('ERROR', data)
+    }
+
 }
