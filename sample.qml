@@ -142,21 +142,10 @@ Window
             }
         }
 
-        Button { text: 'test'; onClicked:
-            {
-                _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, function(headers, data)
-                {
-                    if(headers)
-                    {
-                        print('JODER')
-                        printResult(headers)
-                        print(data)
-                    }
-                    else
-                        print('ERROR', data)
-                })
-            }
-        }
+        Button { text: 'test error1'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org1/login?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
+        Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
+        Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=1_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
+        Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
     }
 
     HTTPClient
@@ -168,6 +157,21 @@ Window
     }
 
     function printResult(result) { Utils.prettyPrint(result) }
+
+    function httpRequestCallback(headers, data)
+    {
+        if(headers)
+        {
+            if('content-type' in headers)
+            {
+                print('JODER')
+                printResult(headers)
+                print(data)
+            }
+        }
+        else
+            print('ERROR', data)
+    }
 }
 
 /*

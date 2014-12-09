@@ -106,7 +106,7 @@ private:
             QJSValueList args;
             QJSValue headers = QQmlEngine::contextForObject(this)->engine()->newObject();
             for(auto& pair : reply->rawHeaderPairs())
-                headers.setProperty(QString::fromLatin1(pair.first), QString::fromLatin1(pair.second));
+                headers.setProperty(QString::fromLatin1(pair.first).toLower(), QString::fromLatin1(pair.second));
             args.append(headers);
             args.append(QJSValue(QString::fromUtf8(reply->readAll())));
             const_cast<QJSValue&>(callback).call(args);
