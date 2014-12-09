@@ -13,6 +13,7 @@
 #include "dnsresolver.h"
 #include "sslsocket.h"
 #include "xmlprotocol.h"
+#include "httpclient.h"
 
 void registerTypes()
 {
@@ -22,4 +23,5 @@ void registerTypes()
     qmlRegisterType<DNSResolver>("atnix.web", 1, 0, "DNSResolver");
     qmlRegisterType<SSLSocket>("atnix.web", 1, 0, "SSLSocket");
     qmlRegisterType<XMLProtocol>("atnix.web", 1, 0, "XMLProtocol");
+    qmlRegisterType<HTTPClient>("atnix.web", 1, 0, "HTTPClient");
 }

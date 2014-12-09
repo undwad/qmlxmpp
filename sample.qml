@@ -134,18 +134,37 @@ Window
         Button { text: 'subscribe node'; onClicked: xmpp.sendSubscribeToNode(topnodes.model.get(topnodes.currentText).node, printResult) }
         Button { text: 'unsubscribe node'; onClicked: xmpp.sendUnsubscribeFromNode(topnodes.model.get(topnodes.currentText).node, null, printResult) }
         Button { text: 'disconnect'; onClicked: xmpp.socket.disconnect() }
-        Button { text: 'joder'; onClicked:
-            {
 
-                AsyncUtils.defer(2000, function()
+        Button { text: 'connect'; onClicked:
+            {
+                print('accessible', HTTPClient.Accessible == _http.networkAccessible)
+                _http.connectEncrypted()
+            }
+        }
+
+        Button { text: 'test'; onClicked:
+            {
+                _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, function(headers, data)
                 {
-                    var url = StringUtils.parseURL('https://zalupa.org#param1=value1&param2=value2')
-                    Utils.prettyPrint(url)
-                    Utils.prettyPrint(StringUtils.parseURLQuery(url.query))
-                    Utils.prettyPrint(StringUtils.parseURLQuery(url.fragment))
+                    if(headers)
+                    {
+                        print('JODER')
+                        printResult(headers)
+                        print(data)
+                    }
+                    else
+                        print('ERROR', data)
                 })
             }
         }
+    }
+
+    HTTPClient
+    {
+        id: _http
+        host: 'zalupa.org'
+        onNetworkAccessibleChanged: print('accessible', HTTPClient.Accessible == networkAccessible)
+        onSslErrors: print('SSL ERRORS', errors)
     }
 
     function printResult(result) { Utils.prettyPrint(result) }
