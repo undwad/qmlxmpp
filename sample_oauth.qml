@@ -36,27 +36,4 @@ Window
     }
 
     ControlWaiting { waiting: _oauth2.loading }
-
-    Button
-    {
-        text: 'JODER'
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        onClicked:
-        {
-            var req = new XMLHttpRequest()
-            req.open('GET', 'https://zalupa.org/login', true)
-            req.onreadystatechange=function()
-            {
-                if (XMLHttpRequest.HEADERS_RECEIVED === req.readyState)
-                      print(req.getAllResponseHeaders());
-                else if(XMLHttpRequest.DONE === req.readyState)
-                {
-                    print('status', req.statusText)
-                    print('response', req.responseText)
-                }
-            }
-            req.send('token=' + token)
-        }
-    }
 }
