@@ -48,16 +48,13 @@ Flipable
         {
             var url = StringUtils.parseURL(request.url.toString())
             if('/oauth2/ok' === url.path)
-            {
                 loggedIn(StringUtils.parseURLQuery(url.fragment).token)
-                request.action = WebView.IgnoreRequest;
-            }
             request.action = WebView.AcceptRequest;
         }
 
         function loginVia(service)
         {
-            _webview.url = 'https://zalupa.org/oauth2/login?service=' + service
+            _webview.url = 'http://ibn.integra-s.com:8888/oauth2/login?service=' + service
             _.flipped = true
         }
 

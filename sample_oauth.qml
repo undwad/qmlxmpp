@@ -50,7 +50,7 @@ Window
         Button { text: 'test error1'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org1', {}, httpRequestCallback) }
         Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1', {}, httpRequestCallback) }
         Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token + '1', {}, httpRequestCallback) }
-        Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token, {}, httpRequestCallback) }
+        Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'http://ibn.integra-s.com:8888/files/getnested.lua', {}, httpRequestCallback) }
         Button { text: 'test url'; onClicked: StringUtils.parseURL('http://host:port/path?param1=1#param2=2').prettyPrint() }
 
     }
