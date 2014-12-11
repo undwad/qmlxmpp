@@ -30,7 +30,7 @@ Window
         {
             hide()
             _.token = token
-            Utils.prettyPrint(token)
+            token.prettyPrint()
         }
     }
 
@@ -51,6 +51,7 @@ Window
         Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1', {}, httpRequestCallback) }
         Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token + '1', {}, httpRequestCallback) }
         Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token, {}, httpRequestCallback) }
+        Button { text: 'test url'; onClicked: StringUtils.parseURL('http://host:port/path?param1=1#param2=2').prettyPrint() }
 
     }
 
@@ -61,7 +62,7 @@ Window
             if('content-type' in headers)
             {
                 print('JODER')
-                Utils.prettyPrint(headers)
+                headers.prettyPrint()
                 print(data)
             }
         }

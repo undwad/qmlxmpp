@@ -52,11 +52,11 @@ Window
 
         onConnecting: print('CONNECTING')
         onEstablished: print('ESTABLISHED')
-        onMessage: if(!('$error' in stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
-        onPresence: if(!('$error' in stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
+        onMessage: if(!('$error' in stanza)) print('MESSAGE', stanza.toPrettyString())
+        onPresence: if(!('$error' in stanza)) print('PRESENCE', stanza.toPrettyString())
 
-        onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
-        onError: print('ERROR', Utils.toPrettyString(stanza))
+        onUnknown: print('UNKNOWN', stanza.toPrettyString())
+        onError: print('ERROR', stanza.toPrettyString())
         onXmlError: print('XML ERROR', error)
         onTimeout: print('TIMEOUT')
     }
@@ -156,7 +156,7 @@ Window
         onSslErrors: print('SSL ERRORS', errors)
     }
 
-    function printResult(result) { Utils.prettyPrint(result) }
+    function printResult(result) { result.prettyPrint() }
 
     function httpRequestCallback(headers, data)
     {

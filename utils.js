@@ -6,8 +6,25 @@
 ** see copyright notice in ./LICENCE
 */
 
-function toPrettyString(object) { return JSON.stringify(object, null, '\t') }
-function prettyPrint(object) { print(toPrettyString(object)) }
+function defineProperty(prototype, name, value, params)
+{
+    params = params || {}
+    if(!prototype.hasOwnProperty(name))
+        Object.defineProperty
+        (
+            prototype,
+            name,
+            {
+                writable: params.writable,
+                enumerable: params.enumerable,
+                configurable: params.enumerable,
+                value: value
+            }
+        )
+}
+
+defineProperty(Object.prototype, 'toPrettyString', function () { return JSON.stringify(this, null, '\t') })
+defineProperty(Object.prototype, 'prettyPrint', function () { print(this.toPrettyString()) })
 
 function toObject(key, array)
 {

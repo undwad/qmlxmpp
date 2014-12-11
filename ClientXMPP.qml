@@ -84,7 +84,7 @@ XMLProtocol
 
     onReceived:
     {
-        //Utils.prettyPrint(object)
+        //object.prettyPrint()
 
         if('object' == typeof object)
         {

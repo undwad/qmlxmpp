@@ -45,9 +45,9 @@ Rectangle
         onTimeout: print('TIMEOUT')
         onFinished: print('FINISHED', stanza)
 
-        onMessage: if(!('$error' in stanza)) print('MESSAGE', Utils.toPrettyString(stanza))
-        onPresence: if(!('$error' in stanza)) print('PRESENCE', Utils.toPrettyString(stanza))
-        onUnknown: print('UNKNOWN', Utils.toPrettyString(stanza))
+        onMessage: if(!('$error' in stanza)) print('MESSAGE', stanza.toPrettyString())
+        onPresence: if(!('$error' in stanza)) print('PRESENCE', stanza.toPrettyString())
+        onUnknown: print('UNKNOWN', stanza.toPrettyString())
     }
 
     Image
