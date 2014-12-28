@@ -16,6 +16,10 @@
 #include <QQmlContext>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QHttpPart>
+#include <QFile>
+#include <QMimeType>
+#include <QMimeDatabase>
 #include <QDebug>
 
 class HTTPClient : public QNetworkAccessManager
@@ -25,8 +29,7 @@ class HTTPClient : public QNetworkAccessManager
     Q_ENUMS(NetworkAccessibility)
     Q_ENUMS(RequestPriority)
 
-    Q_PROPERTY (QString host MEMBER host)
-    Q_PROPERTY (int port MEMBER port)
+    Q_PROPERTY (QString prefix MEMBER prefix)
     Q_PROPERTY (NetworkAccessibility networkAccessible READ getNetworkAccessible)
 
     Q_DISABLE_COPY(HTTPClient)
@@ -56,22 +59,52 @@ signals:
 public slots:
     NetworkAccessibility getNetworkAccessible() const { return (NetworkAccessibility)QNetworkAccessManager::networkAccessible(); }
     void clearAccessCache() { QNetworkAccessManager::clearAccessCache(); }
-    void connect() { connectToHost(host, port > 0 ? port : 80); }
-    void connectEncrypted() { connectToHostEncrypted(host, port > 0 ? port : 443); }
 
     void get(RequestPriority priority, const QString& url, const QJSValue& headers, const QJSValue& callback)
     {
-        processReply(QNetworkAccessManager::get(NetworkRequest(url, headers, priority)), callback);
+        processReply(QNetworkAccessManager::get(NetworkRequest(prefix + url, headers, priority)), callback);
     }
 
     void post(RequestPriority priority, const QString& url, const QJSValue& headers, const QJSValue& body, const QJSValue& callback)
     {
-        processReply(QNetworkAccessManager::post(NetworkRequest(url, headers, priority), body.toString().toUtf8()), callback);
+        processReply(QNetworkAccessManager::post(NetworkRequest(prefix + url, headers, priority), body.toString().toUtf8()), callback);
+    }
+
+    void put(RequestPriority priority, const QString& url, const QJSValue& headers, const QJSValue& body, const QJSValue& callback)
+    {
+        processReply(QNetworkAccessManager::put(NetworkRequest(prefix + url, headers, priority), body.toString().toUtf8()), callback);
+    }
+
+    void deleteResource(RequestPriority priority, const QString& url, const QJSValue& headers, const QJSValue& callback)
+    {
+        processReply(QNetworkAccessManager::deleteResource(NetworkRequest(prefix + url, headers, priority)), callback);
+    }
+
+    void upload(RequestPriority priority, const QString& url, const QJSValue& headers, const QString& path, const QJSValue& callback)
+    {
+        QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+        QMimeType mime = mimeDatabase.mimeTypeForFile(path);
+
+        QHttpPart imagePart;
+        imagePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant(mime.name()));
+        imagePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\""));
+
+        QFile* file = new QFile(path);
+        file->open(QIODevice::ReadOnly);
+        imagePart.setBodyDevice(file);
+        file->setParent(multiPart);
+
+        multiPart->append(imagePart);
+
+        QNetworkReply* reply = QNetworkAccessManager::post(NetworkRequest(prefix + url, headers, priority), multiPart);
+        multiPart->setParent(reply);
+        processReply(reply, callback);
     }
 
 private:
-    QString host;
-    int port = 0;
+    QString prefix;
+    QMimeDatabase mimeDatabase;
 
     class NetworkRequest : public QNetworkRequest
     {

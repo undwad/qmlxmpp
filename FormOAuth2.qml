@@ -10,8 +10,12 @@ import atnix.web 1.0
 Flipable
 {
     id: _
-    anchors.fill: parent
+    visible: false
+    y: -parent.height
+    width: parent.width
+    height: parent.height
 
+    property string appname
     property bool flipped: false
     property bool loading: _webview.loading
 
@@ -84,7 +88,7 @@ Flipable
         property: 'y'
         from: 0
         to: parent.height
-        onRunningChanged: if(!running) _.visible = false
+        onRunningChanged: if(!running) _.flipped = _.visible = false
     }
 
     NumberAnimation

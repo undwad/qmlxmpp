@@ -39,14 +39,13 @@ Window
     HTTPClient
     {
         id: _http
-        host: 'zalupa.org'
         onNetworkAccessibleChanged: print('accessible', HTTPClient.Accessible === networkAccessible)
         onSslErrors: print('SSL ERRORS', errors)
-        Component.onCompleted: connectEncrypted()
     }
 
     ColumnLayout
     {
+        Button { text: 'login'; onClicked: _oauth2.show() }
         Button { text: 'test error1'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org1', {}, httpRequestCallback) }
         Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1', {}, httpRequestCallback) }
         Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=' + token + '1', {}, httpRequestCallback) }
@@ -70,4 +69,7 @@ Window
             print('ERROR', data)
     }
 
+    Component.onCompleted:
+    {
+    }
 }
