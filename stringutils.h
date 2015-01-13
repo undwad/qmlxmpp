@@ -20,6 +20,7 @@
 #include <QJsEngine>
 #include <QUuid>
 #include <QDebug>
+#include <QColor>
 
 class StringUtils : public QObject
 {
@@ -90,6 +91,29 @@ public slots:
     }
 
     QString newGUID() { return QUuid::createUuid().toString(); }
+
+    QJSValue parseColor(const QColor& color)
+    {
+        QJSValue result = engine->newObject();
+        result.setProperty("red", QJSValue(color.red()));
+        result.setProperty("green", QJSValue(color.green()));
+        result.setProperty("blue", QJSValue(color.blue()));
+        result.setProperty("alpha", QJSValue(color.alpha()));
+        return result;
+    }
+
+    QJSValue parseColorF(const QColor& color)
+    {
+        QJSValue result = engine->newObject();
+        result.setProperty("red", QJSValue(color.redF()));
+        result.setProperty("green", QJSValue(color.greenF()));
+        result.setProperty("blue", QJSValue(color.blueF()));
+        result.setProperty("alpha", QJSValue(color.alphaF()));
+        return result;
+    }
+
+
+    QString tempDir() { return "f:/!!!/1"; }
 
 private:
     QJSEngine* engine = nullptr;
