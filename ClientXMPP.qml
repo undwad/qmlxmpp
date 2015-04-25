@@ -51,13 +51,13 @@ XMLProtocol
         presence: presence
     }
 
-//    onJidChanged:
-//    {
-//        var url = StringUtils.parseURL('jid://' + jid)
-//        socket.host = url.host
-//        username = url.userName
-//        resource = url.fileName
-//    }
+    onJidChanged:
+    {
+        var url = StringUtils.parseURL('jid://' + jid)
+        socket.host = url.host
+        username = url.userName
+        resource = url.fileName
+    }
 
     socket.onStateChanged:
     {

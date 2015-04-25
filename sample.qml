@@ -65,7 +65,7 @@ Window
     {
         anchors.fill: parent
         RowLayout { Text { text: 'user jid:' } TextInput { id: from; text: 'undwad2@jabber.integra-s.com' } }
-        RowLayout { Text { text: 'user password:' } TextInput { id: password; echoMode: TextInput.PasswordEchoOnEdit; text: '21345678';  } }
+        RowLayout { Text { text: 'user password:' } TextInput { id: password; echoMode: TextInput.PasswordEchoOnEdit; text: '1111';  } }
         RowLayout { Text { text: 'user email:' } TextInput { id: email; text: 'undwad@mail.ru' } }
         RowLayout { Text { text: 'user name:' } TextInput { id: name; text: 'Ушат Помоев' } }
         RowLayout { Text { text: 'recipient jid:' } TextInput { id: to; text: 'undwad@jabber.integra-s.com' } }
@@ -146,14 +146,6 @@ Window
         Button { text: 'test error2'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login1?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
         Button { text: 'test error3'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=1_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
         Button { text: 'test success'; onClicked: _http.get(HTTPClient.NormalPriority, 'https://zalupa.org/login?token=2_56f5e97525f149ee9690fa4f639dfe33', {}, httpRequestCallback) }
-    }
-
-    HTTPClient
-    {
-        id: _http
-        host: 'zalupa.org'
-        onNetworkAccessibleChanged: print('accessible', HTTPClient.Accessible == networkAccessible)
-        onSslErrors: print('SSL ERRORS', errors)
     }
 
     function printResult(result) { result.prettyPrint() }
